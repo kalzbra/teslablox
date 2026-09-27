@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdf8ee;
+  --foreground: #2a2340;
+
+  /* Tesla's World palette — electric/energy theme, kept warm rather than corporate-bright */
+  --color-electric-50: #eef4ff;
+  --color-electric-100: #d9e7ff;
+  --color-electric-300: #8fb3ff;
+  --color-electric-500: #3b6fe0;
+  --color-electric-600: #2954c0;
+  --color-electric-700: #1f3f97;
+
+  --color-spark-300: #ffe27a;
+  --color-spark-400: #ffd23f;
+  --color-spark-500: #f8b400;
+
+  --color-coral-300: #ffb0a3;
+  --color-coral-500: #ff7a5c;
+  --color-coral-600: #e85f42;
+
+  --color-sky-100: #e4f6ff;
+  --color-sky-300: #b6e6ff;
+
+  --color-violet-300: #d9c9ff;
+  --color-violet-500: #8b6bd9;
+
+  --color-cream-50: #fffdf7;
+  --color-cream-100: #fdf8ee;
+  --color-cream-200: #f8ecd4;
+
+  --color-ink-700: #2a2340;
+  --color-ink-500: #514873;
+
+  --radius-card: 1.75rem;
+  --shadow-soft: 0 10px 30px -12px rgba(42, 35, 64, 0.25);
+  --shadow-soft-lg: 0 20px 45px -18px rgba(42, 35, 64, 0.3);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-electric-50: var(--color-electric-50);
+  --color-electric-100: var(--color-electric-100);
+  --color-electric-300: var(--color-electric-300);
+  --color-electric-500: var(--color-electric-500);
+  --color-electric-600: var(--color-electric-600);
+  --color-electric-700: var(--color-electric-700);
+
+  --color-spark-300: var(--color-spark-300);
+  --color-spark-400: var(--color-spark-400);
+  --color-spark-500: var(--color-spark-500);
+
+  --color-coral-300: var(--color-coral-300);
+  --color-coral-500: var(--color-coral-500);
+  --color-coral-600: var(--color-coral-600);
+
+  --color-sky-100: var(--color-sky-100);
+  --color-sky-300: var(--color-sky-300);
+
+  --color-violet-300: var(--color-violet-300);
+  --color-violet-500: var(--color-violet-500);
+
+  --color-cream-50: var(--color-cream-50);
+  --color-cream-100: var(--color-cream-100);
+  --color-cream-200: var(--color-cream-200);
+
+  --color-ink-700: var(--color-ink-700);
+  --color-ink-500: var(--color-ink-500);
+
+  --font-heading: var(--font-fredoka);
+  --font-sans: var(--font-nunito);
+
+  --radius-card: var(--radius-card);
+
+  --shadow-card: var(--shadow-soft);
+  --shadow-card-lg: var(--shadow-soft-lg);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-spark: spark 1.4s ease-in-out infinite;
+  --animate-fade-up: fade-up 0.6s ease-out both;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-heading {
+  font-family: var(--font-heading), ui-rounded, system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-electric-500);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes spark {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

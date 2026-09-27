@@ -1,0 +1,18 @@
+export const teslaFacts: string[] = [
+  "Tesla loves Roblox.",
+  "Tesla enjoys singing.",
+  "Tesla likes swimming.",
+  "Tesla loves playing with his cousins.",
+  "Elsa is one of Tesla's favorite characters.",
+  "Moana is one of Tesla's favorite characters.",
+  "Tesla dreams of becoming a YouTube star.",
+  "Tesla is good with electronics.",
+  "Tesla enjoys football.",
+  "Tesla was named after Nikola Tesla.",
+  "Tesla supports Liverpool FC.",
+  "Tesla's favorite country is Japan.",
+  "Tesla was born in December.",
+  "Tesla loves playing Temple Run.",
+  "Tesla's favorite car is a Tesla!",
+  "Tesla has a fun auntie named Carol.",
+];
