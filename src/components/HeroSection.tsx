@@ -1,10 +1,10 @@
-import ResponsivePhoto from "@/components/ResponsivePhoto";
+import HeroPhotoRotator from "@/components/HeroPhotoRotator";
 import Button from "@/components/ui/Button";
 import LightningBolt from "@/components/decorative/LightningBolt";
 import Sparkle from "@/components/decorative/Sparkle";
 import type { Photo } from "@/lib/photos";
 
-export default function HeroSection({ photo }: { photo: Photo }) {
+export default function HeroSection({ photos }: { photos: Photo[] }) {
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-sky-100 via-cream-50 to-cream-50 pb-16 pt-12 sm:pt-16">
       <Sparkle className="absolute left-6 top-10 hidden h-8 w-8 text-spark-400 animate-float sm:block" />
@@ -49,17 +49,7 @@ export default function HeroSection({ photo }: { photo: Photo }) {
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="overflow-hidden rounded-card shadow-card-lg ring-4 ring-white">
-            <ResponsivePhoto
-              photo={photo}
-              alt={photo.alt}
-              sizes="(min-width: 1024px) 28rem, 90vw"
-              className="aspect-[4/5] w-full object-cover"
-              priority
-            />
-          </div>
-        </div>
+        <HeroPhotoRotator photos={photos} />
       </div>
     </section>
   );

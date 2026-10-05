@@ -2,17 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { quizQuestions } from "@/data/quiz";
+import { seededShuffle } from "@/lib/seeded-random";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
-
-function shuffled(options: string[]): string[] {
-  const copy = [...options];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
 
 export default function Quiz() {
   const [step, setStep] = useState(0);
@@ -23,9 +15,12 @@ export default function Quiz() {
   const question = quizQuestions[step];
   const finished = step >= quizQuestions.length;
 
-  // Reshuffled once per question per playthrough, not on every render/click.
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const options = useMemo(() => shuffled(question?.options ?? []), [step, round]);
+  // Deterministic per question+playthrough (not Math.random) so server-prerendered HTML and
+  // the client's first render agree — otherwise React flags a hydration mismatch.
+  const options = useMemo(
+    () => seededShuffle(question?.options ?? [], step * 104729 + round * 31 + 7),
+    [step, round, question],
+  );
 
   function choose(option: string) {
     if (selected) return;

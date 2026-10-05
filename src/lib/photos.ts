@@ -1,4 +1,5 @@
 import manifest from "@/data/generated/photo-manifest.json";
+import { heroPhotoIds } from "@/data/hero-photos";
 
 export type PhotoCategory =
   | "Family"
@@ -61,6 +62,15 @@ export function homepagePhotoSelection(count: number): Photo[] {
     selection.push(photos[i]);
   }
   return selection;
+}
+
+/** The curated solo photos for the rotating homepage hero (see src/data/hero-photos.ts).
+ * Falls back to the regular homepage selection if a chosen id ever goes missing (e.g. a photo
+ * was removed) so the hero never silently ends up empty. */
+export function heroPhotos(): Photo[] {
+  const byId = new Map(photos.map((p) => [p.id, p]));
+  const selected = heroPhotoIds.map((id) => byId.get(id)).filter((p): p is Photo => Boolean(p));
+  return selected.length > 0 ? selected : homepagePhotoSelection(3);
 }
 
 /** Minimal shape shared by Photo/TripPage — every processed image manifest entry has this. */

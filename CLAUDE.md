@@ -182,6 +182,30 @@ teslas-trip/            source journal photos (same treatment)
   confirmed live, appears to be real family video content. Update `src/data/favorites.ts` if this
   should change again.
 
+## Decisions locked in (2026-10-05)
+
+- **Homepage hero**: rotates between 3 curated solo (no-one-else-in-frame) photos of Tesla every
+  5s, with click-to-jump dot indicators, via `HeroPhotoRotator.tsx` + `src/data/hero-photos.ts`
+  (just an ordered list of manifest photo ids — update that list to swap a photo in/out). Auto-
+  rotation is skipped entirely under `prefers-reduced-motion`.
+- **Fun Zone expanded**: added Memory Match (emoji-pairs matching game, reuses the Favorites
+  emojis) and Word Scramble (unscramble approved facts/interests as single words) alongside the
+  existing quiz/random fact/random photo. Both are intentionally "lightweight interactions" per
+  spec §22, not full game engines. Quiz grew from 6 to 12 questions, pulling in newly-supplied
+  facts (Liverpool FC, favorite country Japan, birth month, auntie Carol, Temple Run, favorite
+  car brand).
+- **Important gotcha — no `Math.random()` in a client component's render path.** Static export
+  prerenders "use client" components to HTML at build time, then hydrates in the browser; if
+  render output depends on `Math.random()` (or anything non-deterministic), the server-rendered
+  HTML and the client's first render disagree and React throws a hydration-mismatch error (hit
+  this with the Quiz answer-shuffle and Word Scramble/Memory Match). Fix pattern used throughout:
+  `src/lib/seeded-random.ts`'s `seededShuffle()` — a pure function of a seed (e.g. derived from
+  `step`/`round` state, which IS identical on server and client) instead of true randomness.
+  `Math.random()` remains fine inside event handlers (`onClick` etc.) since those only ever run
+  client-side, and in a `useEffect`/post-mount `useState` setter for content that isn't visible
+  until some other interaction reveals it (e.g. Memory Match's initial deck order — all cards
+  render face-down identically regardless of what's underneath, so no mismatch is possible there).
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

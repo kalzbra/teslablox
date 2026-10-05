@@ -17,16 +17,17 @@ import { cousins } from "@/data/family";
 import { dreams } from "@/data/dreams";
 import { nikolaTeslaIntro } from "@/data/nikola-tesla";
 import { kabaleMeta } from "@/data/trip-kabale";
-import { homepagePhotoSelection, photos, tripPages } from "@/lib/photos";
+import { heroPhotos, homepagePhotoSelection, photos, tripPages } from "@/lib/photos";
 
 export default function Home() {
-  const heroPhoto = homepagePhotoSelection(6)[0] ?? photos[0];
-  const highlightPhotos = homepagePhotoSelection(4);
+  const hero = heroPhotos();
+  const heroIds = new Set(hero.map((p) => p.id));
+  const highlightPhotos = homepagePhotoSelection(4).filter((p) => !heroIds.has(p.id));
   const kabaleCover = tripPages[0];
 
   return (
     <>
-      <HeroSection photo={heroPhoto} />
+      <HeroSection photos={hero} />
 
       <Container className="py-16">
         <SectionHeading eyebrow="Quick Intro" title="Meet Tesla" />
