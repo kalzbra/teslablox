@@ -2,7 +2,7 @@
 
 A personal website for Tesla Riley Shyaka — adventures, family, favorites, dreams, and a photo
 gallery. Built with Next.js (App Router), TypeScript, and Tailwind CSS, and exported as a static
-site (no backend, no database, no accounts).
+site, plus a tiny Cloudflare Worker backend (`api/`) used only by the Homework page.
 
 The full content/behavior spec is in `tesla_riley_shyaka.md`. `CLAUDE.md` has build notes,
 decisions, and asset-inventory context for anyone (human or AI) picking this project back up.
@@ -56,20 +56,10 @@ No other page needs to change — the Adventures index and homepage preview are 
 
 ### Updating weekly homework
 
-`/homework` is a locked, sequential weekly quiz Tesla's dad maintains by hand. Everything lives
-in `src/data/homework.ts` — read the comment at the top of that file before editing it; the
-short version:
-
-- `homeworkWeeks` is chronological (oldest first). **Append** a new week to the end with its
-  `questions` and `topics` — it unlocks automatically once Tesla gets 100% on the week before it.
-- After he takes a week, you can add a `result` (score/date/note) to that entry — that's what
-  shows up in the public "Daddy's Homework Log," independent of the automatic unlock tracking.
-- The quiz password (`HOMEWORK_PASSWORD`) and retry cooldown (`RETRY_COOLDOWN_MINUTES`) are also
-  config constants at the top of that file.
-
-The unlock progress itself is tracked client-side (localStorage) on whichever device Tesla
-actually uses — it won't sync across devices without a real backend. See `CLAUDE.md` for the
-full architecture notes if something needs debugging.
+`/homework` is powered by a small Cloudflare Worker in `api/` (questions, answers, grading,
+progress, and the automatic score log all live there). To add a week, append it to
+`api/src/weeks.ts` and run `cd api && npm run deploy` — see `api/README.md` for details and
+local development.
 
 ## Content rules worth knowing
 

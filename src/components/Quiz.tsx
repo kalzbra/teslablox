@@ -75,7 +75,7 @@ export default function Quiz() {
           if (showResult && isCorrect) {
             stateClasses = "border-green-500 bg-green-50";
           } else if (showResult && isSelected && !isCorrect) {
-            stateClasses = "border-coral-500 bg-coral-50";
+            stateClasses = "border-coral-500 bg-coral-500/10";
           }
 
           return (

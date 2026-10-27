@@ -113,7 +113,7 @@ product — no backend, no accounts, no analytics, no public comments/chat/conta
 ```
 src/
   app/                (routes: home, about, favorites, adventures, adventures/kabale,
-                        gallery, dreams, nikola-tesla, fun-zone)
+                        gallery, dreams, nikola-tesla, homework, fun-zone)
   components/
   data/
     tesla.ts           public profile (birthYear only, no exact DOB)
@@ -237,6 +237,10 @@ teslas-trip/            source journal photos (same treatment)
 
 ## Decisions locked in (2026-10-27, later same day)
 
+> **SUPERSEDED for the homework mechanics** by the backend section below (localStorage progress,
+> client-side password, and `src/data/homework.ts` are gone). Kept for history/rationale; the
+> ESLint `set-state-in-effect` notes still apply.
+
 - **Homework page redesigned around sequential locking, a password gate, and a retry cooldown**
   (user wants Tesla to spend real time on each week, and wants this gated from casual visitors):
   - `homeworkWeeks` (`src/data/homework.ts`) is now stored **chronologically ascending** (oldest
@@ -266,7 +270,7 @@ teslas-trip/            source journal photos (same treatment)
     ever run well after initial mount (quiz completion requires real interaction first), so
     there's no hydration-mismatch risk despite reading `Date.now()`.
   - Password gate (`HomeworkPasswordGate.tsx`) uses `HOMEWORK_PASSWORD` from
-    `src/data/homework.ts` (currently `daddylovestesla18`) — **this is a soft gate only**, not
+    `src/data/homework.ts` (value intentionally not recorded here) — **this is a soft gate only**, not
     real security: the check ships inside the public JS bundle and is trivially visible via
     browser dev tools. It's meant to keep casual visitors out, not withstand a determined
     technical one. Persisted via localStorage key `teslablox:homework-unlocked`; gates only the
@@ -291,6 +295,52 @@ teslas-trip/            source journal photos (same treatment)
   - Added 3 more placeholder weeks (Ocean Explorers, Robots & Machines, Mighty Earth) so there
     are 4 total in the locked sequence — still placeholder content pending approval, same as the
     first week.
+
+## Decisions locked in (2026-10-27, evening) — homework backend + games hub
+
+- **The "static site, no backend" rule is relaxed for homework only**: user explicitly asked for
+  a small backend for the homework section. Everything else stays static.
+- **Homework API** lives in `api/` — a Cloudflare Worker + D1 (SQLite), its own npm package with
+  its own tsconfig (excluded from the root tsconfig/eslint). Served at `api.teslariley.com` as a
+  Workers Custom Domain (it gets its own proxied DNS record; the apex stays DNS-only → GitHub
+  Pages). See `api/README.md` for setup, local dev, and the "add a new week" workflow.
+  - `api/src/weeks.ts` is now the single source of truth for homework content, **including
+    answers** — it never ships to the browser. Questions are sent without answers; each answer is
+    graded server-side and only then is the correct answer/explanation returned. First answer per
+    question is final. This fixes the "answers visible in View Source" leak found earlier.
+  - Password is a Worker secret (`HOMEWORK_PASSWORD`; local: `api/.dev.vars`, gitignored). It is
+    no longer anywhere in the website code. The site stores it in localStorage after it's accepted
+    and sends it as `Authorization: Bearer …`.
+  - A week opens when the previous week has a perfect score AND its `opensOn` date (Tokyo time)
+    has arrived — matching the user's "one per week" ask. Cooldown (15 min after a non-perfect
+    finish) is enforced server-side at `/start`. Progress syncs across devices.
+  - The public "Daddy's Homework Log" is now generated automatically from recorded attempts
+    (`GET /api/log`) — no manual `result` entry. Optional per-week `logNote` for Dad's comments.
+    The two old manual history weeks (Computers 101, Animal Kingdom) were removed at the user's
+    request.
+  - Per-week `resources` (videos/sites/games) were researched and each verified live, free,
+    no-login, kid-appropriate (official channels: NASA, Nat Geo, SciShow Kids, Crash Course Kids,
+    Code.org, TED-Ed, NOAA, NASA Space Place). Shown in "Keep Exploring" above the general
+    per-category links from `src/data/learning-resources.ts`. Dropped during verification: a Nat
+    Geo Everest video (description mentions corpses), several NASA Space Place pages that now 404,
+    NOAA submersibles page (grade 11-12 reading level), SciJinks (retired).
+  - Website side: `src/lib/homework-api.ts` (client + types; base URL from
+    `NEXT_PUBLIC_HOMEWORK_API`, default `https://api.teslariley.com`; root `.env.local` points it
+    at `http://localhost:8787` for dev). `HomeworkPasswordGate` provides the key via context
+    (`useHomeworkKey`); `HomeworkSequence` loads the roadmap; `HomeworkQuiz` runs start → answer
+    → finish against the API; `HomeworkLog` fetches the log and reloads on the
+    `teslablox:homework-updated` window event fired after a finish.
+- **Fun Zone is now a games hub** (`src/components/GameHub.tsx`): 13 games grouped into Brain
+  Puzzles / Math / Words & Quizzes / Just for Fun, selected via the URL hash (`/fun-zone#sudoku`)
+  so Back works and games are linkable. New games in `src/components/games/`: Mini Sudoku (4×4/6×6,
+  generated by permuting a valid base grid; win = any valid full grid), Photo Slide Puzzle (3×3
+  using a hero photo, scrambled by random legal moves so always solvable), Pattern Memory (Simon),
+  Tic-Tac-Toe (Easy random / Hard minimax), Times Table Sprint (60s), Rocket Word Guess (hangman
+  without the hangman), World Capitals (10 random of 30, includes Uganda/Japan), Riddle Box.
+  Personal bests via `src/lib/use-best-score.ts` (useSyncExternalStore over localStorage).
+  All `Math.random()` use is in event handlers; every initial render is deterministic.
+- Homepage: added a "This Week's Homework" teaser card and replaced the embedded quiz with links
+  into featured games.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

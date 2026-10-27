@@ -1,11 +1,20 @@
 "use client";
 
-import { useState, useSyncExternalStore, type FormEvent, type ReactNode } from "react";
-import { HOMEWORK_PASSWORD } from "@/data/homework";
+import {
+  createContext,
+  useContext,
+  useState,
+  useSyncExternalStore,
+  type FormEvent,
+  type ReactNode,
+} from "react";
+import { ApiError, homeworkApi } from "@/lib/homework-api";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
-const STORAGE_KEY = "teslablox:homework-unlocked";
+// The password is checked by the homework API — nothing about it ships in the website's code.
+// Once accepted it's remembered on this device and sent with each homework request.
+const STORAGE_KEY = "teslablox:homework-key";
 const listeners = new Set<() => void>();
 
 function emitChange() {
@@ -13,9 +22,8 @@ function emitChange() {
 }
 
 // useSyncExternalStore is the React-sanctioned way to read an external store (localStorage
-// here) — unlike a plain useEffect+setState, it tells React up front that this value may
-// legitimately differ between the server render and the client, so React handles the
-// post-hydration correction itself without a manual "null until mounted" workaround.
+// here): it handles the server-render vs. client difference itself, no "null until mounted"
+// workaround. The snapshot is a string (or null), so it's reference-stable as the API requires.
 function subscribe(callback: () => void) {
   listeners.add(callback);
   window.addEventListener("storage", callback); // changes made from another tab
@@ -26,36 +34,55 @@ function subscribe(callback: () => void) {
 }
 
 function getSnapshot() {
-  return window.localStorage.getItem(STORAGE_KEY) === "true";
+  return window.localStorage.getItem(STORAGE_KEY);
 }
 
 function getServerSnapshot() {
-  return false; // locked by default for the server-rendered HTML / first client paint
+  return null; // locked in the server-rendered HTML / first client paint
+}
+
+type HomeworkKeyContext = { key: string; lock: () => void };
+const KeyContext = createContext<HomeworkKeyContext | null>(null);
+
+export function useHomeworkKey(): HomeworkKeyContext {
+  const ctx = useContext(KeyContext);
+  if (!ctx) throw new Error("useHomeworkKey must be used inside HomeworkPasswordGate");
+  return ctx;
+}
+
+function lock() {
+  window.localStorage.removeItem(STORAGE_KEY);
+  emitChange();
 }
 
 export default function HomeworkPasswordGate({ children }: { children: ReactNode }) {
-  const unlocked = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const key = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const [input, setInput] = useState("");
-  const [wrong, setWrong] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
 
-  function submit(e: FormEvent) {
+  async function submit(e: FormEvent) {
     e.preventDefault();
-    if (input === HOMEWORK_PASSWORD) {
-      window.localStorage.setItem(STORAGE_KEY, "true");
+    if (!input) return;
+    setChecking(true);
+    setMessage(null);
+    try {
+      await homeworkApi.checkPassword(input);
+      window.localStorage.setItem(STORAGE_KEY, input);
+      setInput("");
       emitChange();
-      setWrong(false);
-    } else {
-      setWrong(true);
+    } catch (err) {
+      setMessage(
+        err instanceof ApiError && err.status === 401
+          ? "Hmm, that's not quite right — try again!"
+          : "Can't reach the homework server right now. Try again in a little while!",
+      );
+    } finally {
+      setChecking(false);
     }
   }
 
-  function lockAgain() {
-    window.localStorage.removeItem(STORAGE_KEY);
-    emitChange();
-    setInput("");
-  }
-
-  if (!unlocked) {
+  if (!key) {
     return (
       <Card className="mx-auto max-w-sm p-8 text-center">
         <p className="text-4xl">🔐</p>
@@ -74,36 +101,34 @@ export default function HomeworkPasswordGate({ children }: { children: ReactNode
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
-              setWrong(false);
+              setMessage(null);
             }}
             placeholder="Password"
             className="rounded-2xl border-2 border-ink-700/10 px-4 py-3 text-center font-medium text-ink-700 focus:border-electric-400"
           />
-          <Button type="submit" variant="electric">
-            Unlock
+          <Button type="submit" variant="electric" disabled={checking}>
+            {checking ? "Checking…" : "Unlock"}
           </Button>
         </form>
-        {wrong && (
-          <p className="mt-3 text-sm font-medium text-coral-600 animate-fade-up">
-            Hmm, that&apos;s not quite right — try again!
-          </p>
+        {message && (
+          <p className="mt-3 text-sm font-medium text-coral-600 animate-fade-up">{message}</p>
         )}
       </Card>
     );
   }
 
   return (
-    <div>
+    <KeyContext.Provider value={{ key, lock }}>
       <div className="mb-3 text-right">
         <button
           type="button"
-          onClick={lockAgain}
+          onClick={lock}
           className="text-xs font-medium text-ink-500 underline underline-offset-4"
         >
           🔒 Lock this again
         </button>
       </div>
       {children}
-    </div>
+    </KeyContext.Provider>
   );
 }

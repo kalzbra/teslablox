@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The homework Worker is its own package with its own tsconfig (api/).
+    "api/**",
   ]),
 ]);
 

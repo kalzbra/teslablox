@@ -1,0 +1,20 @@
+name = "teslablox-api"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+
+# api.teslariley.com is a Workers Custom Domain: wrangler creates its own proxied DNS record
+# for it on deploy. The apex (teslariley.com) stays DNS-only, pointing at GitHub Pages.
+routes = [{ pattern = "api.teslariley.com", custom_domain = true }]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "teslablox"
+# Created with `npx wrangler d1 create teslablox`.
+database_id = "f8b6391f-ad94-4758-857f-38e2f94d1627"
+migrations_dir = "migrations"
+
+[vars]
+ALLOWED_ORIGINS = "https://teslariley.com,https://www.teslariley.com,http://localhost:3000"
+
+# HOMEWORK_PASSWORD is a secret, not a var: `npx wrangler secret put HOMEWORK_PASSWORD`.
+# For local dev it comes from api/.dev.vars (gitignored).

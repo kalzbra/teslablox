@@ -4,7 +4,6 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import HomeworkPasswordGate from "@/components/HomeworkPasswordGate";
 import HomeworkSequence from "@/components/HomeworkSequence";
 import HomeworkLog from "@/components/HomeworkLog";
-import { homeworkWeeks } from "@/data/homework";
 
 export const metadata: Metadata = {
   title: "Homework | TeslaBlox",
@@ -26,7 +25,7 @@ export default function HomeworkPage() {
 
       <div className="mt-12">
         <HomeworkPasswordGate>
-          <HomeworkSequence weeks={homeworkWeeks} />
+          <HomeworkSequence />
         </HomeworkPasswordGate>
       </div>
 
@@ -36,7 +35,7 @@ export default function HomeworkPage() {
           title="Daddy's Homework Log 📒"
           subtitle="Every week, right here."
         />
-        <HomeworkLog weeks={homeworkWeeks} />
+        <HomeworkLog />
       </div>
     </Container>
   );

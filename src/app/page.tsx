@@ -8,16 +8,21 @@ import AdventureCard from "@/components/AdventureCard";
 import DreamCard from "@/components/DreamCard";
 import FamilyCard from "@/components/FamilyCard";
 import ResponsivePhoto from "@/components/ResponsivePhoto";
-import RandomPhoto from "@/components/RandomPhoto";
 import RandomFact from "@/components/RandomFact";
-import Quiz from "@/components/Quiz";
 import { bio } from "@/data/tesla";
 import { favorites, homepageHighlightSlugs } from "@/data/favorites";
 import { cousins } from "@/data/family";
 import { dreams } from "@/data/dreams";
 import { nikolaTeslaIntro } from "@/data/nikola-tesla";
 import { kabaleMeta } from "@/data/trip-kabale";
-import { heroPhotos, homepagePhotoSelection, photos, tripPages } from "@/lib/photos";
+import { heroPhotos, homepagePhotoSelection, tripPages } from "@/lib/photos";
+
+const FEATURED_GAMES = [
+  { id: "sudoku", title: "Mini Sudoku", emoji: "🔢" },
+  { id: "times", title: "Times Table Sprint", emoji: "⏱️" },
+  { id: "rocket", title: "Rocket Word Guess", emoji: "🚀" },
+  { id: "sliding", title: "Photo Slide Puzzle", emoji: "🧩" },
+];
 
 export default function Home() {
   const hero = heroPhotos();
@@ -38,6 +43,28 @@ export default function Home() {
               Read Tesla&apos;s Full Story
             </Button>
           </div>
+        </div>
+      </Container>
+
+      <Container className="py-8">
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 rounded-card bg-gradient-to-br from-electric-500 to-electric-700 p-8 text-center text-white shadow-card-lg sm:flex-row sm:text-left">
+          <span className="text-6xl" aria-hidden="true">
+            🎓
+          </span>
+          <div className="flex-1">
+            <p className="font-heading text-sm font-semibold uppercase tracking-wide text-spark-300">
+              New every week
+            </p>
+            <p className="mt-1 font-heading text-2xl font-semibold">
+              This Week&apos;s Homework from Daddy in Japan
+            </p>
+            <p className="mt-1 text-white/85">
+              Science, math, and tech challenges — get a perfect score to unlock the next week!
+            </p>
+          </div>
+          <Button href="/homework" variant="spark">
+            Open Homework →
+          </Button>
         </div>
       </Container>
 
@@ -139,16 +166,32 @@ export default function Home() {
       </Container>
 
       <Container className="py-16">
-        <SectionHeading eyebrow="Fun Zone 🎮" title="Play, Discover, and Explore" />
-        <div className="flex flex-col items-center gap-14">
-          <Quiz />
+        <SectionHeading
+          eyebrow="Fun Zone 🎮"
+          title="Play, Discover, and Explore"
+          subtitle="13 games and puzzles — here are a few to start with."
+        />
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {FEATURED_GAMES.map((g) => (
+            <Link
+              key={g.id}
+              href={`/fun-zone#${g.id}`}
+              className="flex flex-col items-center gap-2 rounded-card bg-white/90 p-5 text-center shadow-card ring-1 ring-ink-700/5 transition-transform duration-200 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+            >
+              <span className="text-4xl" aria-hidden="true">
+                {g.emoji}
+              </span>
+              <span className="font-heading text-sm font-semibold text-ink-700">{g.title}</span>
+            </Link>
+          ))}
+        </div>
+        <div className="mt-12">
           <RandomFact />
-          <RandomPhoto photos={photos} />
         </div>
         <div className="mt-10 text-center">
-          <Link href="/fun-zone" className="font-medium text-electric-600 underline underline-offset-4">
-            Visit the full Fun Zone →
-          </Link>
+          <Button href="/fun-zone" variant="electric">
+            See All Games →
+          </Button>
         </div>
       </Container>
     </>

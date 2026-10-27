@@ -1,35 +1,22 @@
 /**
- * "This Week's Homework from Daddy in Japan" — a weekly science/math/tech quiz, maintained by
- * hand (same pattern as the rest of src/data/).
+ * "This Week's Homework from Daddy in Japan" — the weekly quiz content, INCLUDING ANSWERS.
+ * This file only ever runs inside the Cloudflare Worker; answers/explanations are never sent to
+ * the browser until Tesla has answered that question (see src/index.ts).
  *
- * `homeworkWeeks` is CHRONOLOGICAL ASCENDING (oldest first) — this matters now because weeks
- * with `questions` unlock in sequence: the first one in the array is always open, and each
- * later one only unlocks once Tesla scores 100% on the one before it (tracked client-side, see
- * src/lib/homework-progress.ts — NOT stored here). Weeks with no `questions` (just a `result`)
- * are pure history that predates the lock mechanic and sit outside the sequence entirely.
+ * `homeworkWeeks` is chronological (oldest first). A week becomes available when BOTH:
+ *   - Tesla has scored 100% on the week before it, and
+ *   - today (Tokyo date) is on or after its `opensOn` date.
+ * The first week only needs its `opensOn` date.
  *
- * Workflow for a new week:
- *   1. APPEND a new HomeworkWeek with fresh `questions` and `topics` to the END of the array.
- *      It'll automatically become available once Tesla clears every week before it. `topics`
- *      should be the LearningCategory values (see src/data/learning-resources.ts) that the
- *      week's questions actually touch — that drives the "Keep Exploring" links.
- *   2. After Tesla takes it, you can also add a `result` to that entry — score, date, optional
- *      note — which is what shows up in the public "Daddy's Homework Log". This is entirely
- *      separate bookkeeping from the device-local pass/fail tracking that drives unlocking; it's
- *      the hand-curated public record and only you control what goes in it.
+ * Workflow for a new week: APPEND a new entry to the END of the array with a fresh, unique `id`,
+ * an `opensOn` date, `questions`, `topics` (LearningCategory names from the website's
+ * src/data/learning-resources.ts), and optionally week-specific `resources`. Then redeploy:
+ * `cd api && npm run deploy`. Scores are recorded automatically — no manual logging.
  *
- * NOTE: everything below is PLACEHOLDER content for reviewing the page design. Replace the
- * questions/notes/scores with real ones once the design is approved.
+ * Optional `logNote` is a comment from Daddy shown next to that week in the public Homework Log.
+ *
+ * NOTE: questions below are still PLACEHOLDER content pending Daddy's approval.
  */
-
-import type { LearningCategory } from "@/data/learning-resources";
-
-/** Soft gate only — this ships inside the public JS bundle, so it keeps casual visitors out,
- * not a determined technical one. Change it any time; just tell whoever needs the new value. */
-export const HOMEWORK_PASSWORD = "daddylovestesla18";
-
-/** How long Tesla has to wait before retrying the same week's quiz after a non-100% attempt. */
-export const RETRY_COOLDOWN_MINUTES = 15;
 
 export type HomeworkSubject = "Science" | "Math" | "Tech";
 
@@ -45,54 +32,45 @@ export type HomeworkQuestion =
   | (BaseQuestion & { type: "multiple-choice"; options: string[] })
   | (BaseQuestion & { type: "type-answer" });
 
-export type HomeworkResult = {
-  score: number;
-  outOf: number;
-  dateTaken: string;
-  note?: string;
+export type WeekResource = {
+  title: string;
+  description: string;
+  href: string;
+  kind: "video" | "site" | "game";
+  minutes?: number;
 };
 
 export type HomeworkWeek = {
   id: string;
   weekOf: string;
+  /** YYYY-MM-DD, compared against today's date in Tokyo. */
+  opensOn: string;
   theme: string;
   dadNote: string;
-  questions?: HomeworkQuestion[];
-  topics?: LearningCategory[];
-  result?: HomeworkResult;
+  questions: HomeworkQuestion[];
+  /** LearningCategory names — the website maps these to its general "Keep Exploring" links. */
+  topics: string[];
+  resources?: WeekResource[];
+  logNote?: string;
 };
 
 export const homeworkWeeks: HomeworkWeek[] = [
   {
-    id: "2026-10-12",
-    weekOf: "Week of October 12, 2026",
-    theme: "Computers 101 Week 💻",
-    dadNote: "Our very first homework week — learning how computers work!",
-    result: {
-      score: 7,
-      outOf: 9,
-      dateTaken: "October 12, 2026",
-    },
-  },
-  {
-    id: "2026-10-19",
-    weekOf: "Week of October 19, 2026",
-    theme: "Animal Kingdom Week 🦁",
-    dadNote: "This week was all about amazing animals!",
-    result: {
-      score: 9,
-      outOf: 10,
-      dateTaken: "October 19, 2026",
-      note: "Got every animal question right — only missed one about bees!",
-    },
-  },
-  {
     id: "2026-10-26",
     weekOf: "Week of October 26, 2026",
+    opensOn: "2026-10-26",
     theme: "Welcome to Homework Week! 🚀",
     dadNote:
       "Hi buddy! Starting this week, I'm going to leave you some fun science, math, and tech questions every week — kind of like homework, but way more fun. Get a perfect score to unlock next week's homework! Take your time, use your brain, and stay curious. Love, Daddy.",
     topics: ["Space", "Animals", "Math", "Computers"],
+    resources: [
+      { kind: "video", title: "Solar System 101", description: "Watch a short tour of our solar system, how it formed, and its planets, moons, and asteroids.", href: "https://www.youtube.com/watch?v=libKVRa01L8", minutes: 4, },
+      { kind: "video", title: "How Computers Work: What Makes a Computer, a Computer?", description: "Watch how computers take input, store and process information, and give output.", href: "https://www.youtube.com/watch?v=mCq8-xTH7jA", minutes: 5, },
+      { kind: "video", title: "How Computers Work: Binary & Data", description: "See how computers store everything using just 0s and 1s.", href: "https://www.youtube.com/watch?v=USCBCmwMCDA", minutes: 6, },
+      { kind: "video", title: "Defining Gravity: Crash Course Kids", description: "Find out why gravity pulls things toward the Earth, and why nobody falls off the bottom of the planet.", href: "https://www.youtube.com/watch?v=ljRlB6TuMOU", minutes: 3, },
+      { kind: "video", title: "Just How Small Is an Atom?", description: "See just how tiny atoms are, and what is inside them.", href: "https://www.youtube.com/watch?v=yQP4UJhNn0I", minutes: 5, },
+      { kind: "site", title: "All About Mars (NASA Space Place)", description: "Explore Mars: its red rusty soil, its giant canyon, its two moons, and the rovers driving on it.", href: "https://spaceplace.nasa.gov/all-about-mars/en/", },
+    ],
     questions: [
       {
         id: "sci-1",
@@ -280,10 +258,18 @@ export const homeworkWeeks: HomeworkWeek[] = [
   {
     id: "2026-11-02",
     weekOf: "Week of November 2, 2026",
+    opensOn: "2026-11-02",
     theme: "Ocean Explorers Week 🌊",
     dadNote:
       "You did it — 100% on your first week! Amazing job, buddy. This week we're diving into the ocean. Let's see what you know about the sea!",
     topics: ["Animals", "Geography"],
+    resources: [
+      { kind: "video", title: "Blue Whales: The Biggest Animal EVER!", description: "Learn what blue whales eat, where they live, and just how big they really are.", href: "https://www.youtube.com/watch?v=GSmBYqmz4Y4", minutes: 6, },
+      { kind: "video", title: "5 Reasons Why Dolphins Are Awesome", description: "Five cool facts about dolphins, the clever mammals of the sea.", href: "https://www.youtube.com/watch?v=hREPV58WNp0", minutes: 4, },
+      { kind: "video", title: "The Deepest Part of the Ocean!", description: "Dive down to the Mariana Trench and meet the tough creatures that live in the deepest part of the ocean.", href: "https://www.youtube.com/watch?v=7tiZHrgc8Vc", minutes: 4, },
+      { kind: "site", title: "Blue Whale (National Geographic Kids)", description: "Facts and photos about the biggest animal that has ever lived.", href: "https://kids.nationalgeographic.com/animals/mammals/facts/blue-whale", },
+      { kind: "site", title: "How Many Oceans Are There? (NOAA)", description: "Find out why scientists say there is really one big global ocean, split into five named oceans. You may want a grown-up to help with some words.", href: "https://oceanservice.noaa.gov/facts/howmanyoceans.html", },
+    ],
     questions: [
       {
         id: "ocean-1",
@@ -402,10 +388,19 @@ export const homeworkWeeks: HomeworkWeek[] = [
   {
     id: "2026-11-09",
     weekOf: "Week of November 9, 2026",
+    opensOn: "2026-11-09",
     theme: "Robots & Machines Week 🤖",
     dadNote:
       "Two weeks in a row — I'm so proud of you! This week is all about robots, machines, and how things move. Let's get mechanical!",
     topics: ["Computers", "Physics", "Math"],
+    resources: [
+      { kind: "video", title: "Real-Life Robots", description: "Meet some real robots and find out what makes something a robot.", href: "https://www.youtube.com/watch?v=8wHJjLMnikU", minutes: 4, },
+      { kind: "video", title: "Watch NASA's Perseverance Rover Land", description: "Ride along with real camera video as Perseverance parachutes and lands on Mars.", href: "https://www.youtube.com/watch?v=GUqsH5y1j1M", minutes: 1, },
+      { kind: "video", title: "Super Simple Machines: Levers", description: "See how a lever makes heavy work easier, and how you can make one.", href: "https://www.youtube.com/watch?v=lueqE0lxLyc", minutes: 3, },
+      { kind: "video", title: "Need a Lift? Try a Pulley!", description: "See how a pulley helps lift heavy things.", href: "https://www.youtube.com/watch?v=Nj4J7QNeBNk", minutes: 3, },
+      { kind: "video", title: "Slipping, Sliding Science!", description: "Find out what friction is and why it slows things down.", href: "https://www.youtube.com/watch?v=Ps90zArJEJY", minutes: 4, },
+      { kind: "game", title: "Code.org for Ages 5 to 11", description: "Try free coding puzzles, make animations in Sprite Lab, or mix music with code.", href: "https://code.org/en-US/students/elementary", },
+    ],
     questions: [
       {
         id: "robot-1",
@@ -527,10 +522,19 @@ export const homeworkWeeks: HomeworkWeek[] = [
   {
     id: "2026-11-16",
     weekOf: "Week of November 16, 2026",
+    opensOn: "2026-11-16",
     theme: "Mighty Earth Week 🌍",
     dadNote:
       "Three weeks of hard work — I'm so proud of you! This week we're learning about planet Earth itself: mountains, weather, and the amazing creatures that live here.",
     topics: ["Geography", "Physics", "Animals"],
+    resources: [
+      { kind: "video", title: "All About Volcanoes", description: "Explore how volcanoes form and what happens when they erupt.", href: "https://www.youtube.com/watch?v=K7Oq9_DU1Mc", minutes: 3, },
+      { kind: "video", title: "Could I Dig a Hole Through the Earth?", description: "Find out why you can't dig to the other side of the Earth, and learn about the hot layers deep inside our planet.", href: "https://www.youtube.com/watch?v=oEW_Qwj6ZCE", minutes: 4, },
+      { kind: "video", title: "Water's Amazing Journey", description: "Squeaks and friends put on a play about the water cycle.", href: "https://www.youtube.com/watch?v=vD-ZwMjRDPU", minutes: 7, },
+      { kind: "video", title: "Who Knew? Amazing Owl Facts!", description: "Meet owls, some of the coolest nocturnal animals.", href: "https://www.youtube.com/watch?v=13yxEVwdUbw", minutes: 4, },
+      { kind: "site", title: "What Is a Tsunami? (NASA Space Place)", description: "Learn how an underwater earthquake can push ocean water into a giant wave, and how satellites help warn people.", href: "https://spaceplace.nasa.gov/tsunami/en/", },
+      { kind: "site", title: "Earth's Atmosphere (NASA Space Place)", description: "Explore the layers of air that wrap around our planet.", href: "https://spaceplace.nasa.gov/atmosphere/en/", },
+    ],
     questions: [
       {
         id: "earth-1",

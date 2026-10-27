@@ -1,4 +1,4 @@
-import type { HomeworkSubject } from "@/data/homework";
+import type { HomeworkSubject } from "@/lib/homework-api";
 
 const SUBJECT_STYLES: Record<HomeworkSubject, { emoji: string; className: string }> = {
   Science: { emoji: "🔬", className: "bg-electric-500/10 text-electric-700" },

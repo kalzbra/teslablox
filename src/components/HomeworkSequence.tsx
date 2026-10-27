@@ -1,100 +1,143 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import type { HomeworkWeek } from "@/data/homework";
-import { hasPassed, loadProgress, type ProgressState } from "@/lib/homework-progress";
+import { ApiError, formatOpensOn, homeworkApi, type Overview } from "@/lib/homework-api";
+import { useHomeworkKey } from "@/components/HomeworkPasswordGate";
 import HomeworkQuiz from "@/components/HomeworkQuiz";
+import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
-export default function HomeworkSequence({ weeks }: { weeks: HomeworkWeek[] }) {
-  const questionWeeks = weeks.filter((w) => w.questions && w.questions.length > 0);
+type LoadState =
+  | { kind: "loading" }
+  | { kind: "error" }
+  | { kind: "ready"; overview: Overview };
 
-  // null = progress not checked yet. Deferring the real value to post-mount avoids a
-  // hydration mismatch — the server (and the client's first paint) can't know what's in this
-  // particular browser's localStorage, so both render nothing until this effect runs.
-  const [progress, setProgress] = useState<ProgressState | null>(null);
+const STATUS_STYLE = {
+  passed: { icon: "✅", className: "bg-green-50 text-green-700" },
+  active: { icon: "✏️", className: "bg-electric-100 text-electric-700" },
+  scheduled: { icon: "📅", className: "bg-spark-300/30 text-ink-700" },
+  locked: { icon: "🔒", className: "bg-white/60 text-ink-500" },
+} as const;
 
-  const refresh = useCallback(() => setProgress(loadProgress()), []);
+export default function HomeworkSequence() {
+  const { key, lock } = useHomeworkKey();
+  const [state, setState] = useState<LoadState>({ kind: "loading" });
+  const [reloads, setReloads] = useState(0);
 
-  // Deliberately NOT useSyncExternalStore here: `loadProgress()` returns a freshly-parsed
-  // object every call, which would break useSyncExternalStore's reference-stability contract,
-  // and — more importantly — this view should only update when explicitly refreshed (via
-  // HomeworkQuiz's onPassed, after the user clicks past the celebration screen), not the
-  // instant the store changes. A plain mount-time read is the right tool here.
+  const refresh = useCallback(() => setReloads((n) => n + 1), []);
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    refresh();
-  }, [refresh]);
+    let cancelled = false;
+    homeworkApi
+      .overview(key)
+      .then((overview) => {
+        if (!cancelled) setState({ kind: "ready", overview });
+      })
+      .catch((err) => {
+        if (cancelled) return;
+        if (err instanceof ApiError && err.status === 401) lock(); // password changed
+        else setState({ kind: "error" });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [key, lock, reloads]);
 
-  if (progress === null) {
-    return null;
+  if (state.kind === "loading") {
+    return (
+      <Card className="mx-auto max-w-xl p-8 text-center text-ink-500">
+        Loading your homework… ⚡
+      </Card>
+    );
   }
 
-  const activeIndex = questionWeeks.findIndex((w) => !hasPassed(progress, w.id));
-  const allCaughtUp = activeIndex === -1;
-  const activeWeek = allCaughtUp ? null : questionWeeks[activeIndex];
+  if (state.kind === "error") {
+    return (
+      <Card className="mx-auto max-w-xl p-8 text-center">
+        <p className="text-ink-700">Can&apos;t reach the homework server right now.</p>
+        <div className="mt-4">
+          <Button
+            variant="electric"
+            onClick={() => {
+              setState({ kind: "loading" });
+              refresh();
+            }}
+          >
+            Try Again
+          </Button>
+        </div>
+      </Card>
+    );
+  }
+
+  const { weeks, active } = state.overview;
+  const scheduled = weeks.find((w) => w.status === "scheduled");
 
   return (
     <div className="flex flex-col gap-10">
-      {activeWeek ? (
+      {active ? (
         <>
           <div className="mx-auto max-w-xl rounded-card bg-gradient-to-br from-electric-50 to-sky-100 p-6 text-center shadow-card ring-1 ring-ink-700/5 sm:p-8">
-            <p className="font-heading text-sm font-semibold text-electric-600">
-              {activeWeek.theme}
-            </p>
-            <p className="mt-2 text-lg text-ink-700">{activeWeek.dadNote}</p>
+            <p className="font-heading text-sm font-semibold text-electric-600">{active.theme}</p>
+            <p className="mt-2 text-lg text-ink-700">{active.dadNote}</p>
           </div>
-
-          {/* key={activeWeek.id} forces a fresh component instance when the active week
-              changes, so the quiz's internal state (step, score, etc.) resets instead of
-              carrying over stale state from the previous week. */}
-          <HomeworkQuiz key={activeWeek.id} week={activeWeek} onPassed={refresh} />
+          {/* key forces a fresh quiz instance (fresh step/score state) when the week changes. */}
+          <HomeworkQuiz key={active.id} week={active} onDone={refresh} />
         </>
-      ) : (
+      ) : scheduled ? (
         <Card className="mx-auto max-w-xl p-8 text-center">
           <p className="text-4xl">🎉</p>
           <p className="mt-3 font-heading text-2xl font-semibold text-ink-700">
-            You&apos;re all caught up!
+            This week&apos;s homework is done!
           </p>
           <p className="mt-2 text-ink-500">
-            Check back soon — Daddy will add more homework for you to unlock.
+            Next up: <span className="font-semibold text-ink-700">{scheduled.theme}</span> —
+            opens on {formatOpensOn(scheduled.opensOn)}.
           </p>
+          <p className="mt-4 text-sm text-ink-500">
+            Until then, try a game in the{" "}
+            <Link href="/fun-zone" className="font-medium text-electric-600 underline">
+              Fun Zone
+            </Link>
+            !
+          </p>
+        </Card>
+      ) : (
+        <Card className="mx-auto max-w-xl p-8 text-center">
+          <p className="text-4xl">🏆</p>
+          <p className="mt-3 font-heading text-2xl font-semibold text-ink-700">
+            You&apos;re all caught up!
+          </p>
+          <p className="mt-2 text-ink-500">Daddy will add more homework soon.</p>
         </Card>
       )}
 
-      {questionWeeks.length > 1 && (
-        <div>
-          <p className="mb-4 text-center font-heading text-lg font-semibold text-ink-700">
-            Homework Roadmap
-          </p>
-          <ul className="mx-auto flex max-w-xl flex-col gap-2">
-            {questionWeeks.map((w, i) => {
-              const passed = hasPassed(progress, w.id);
-              const isActive = !allCaughtUp && i === activeIndex;
-              const locked = !passed && !isActive;
-
-              return (
-                <li
-                  key={w.id}
-                  className={`flex items-center gap-3 rounded-2xl px-5 py-3 ${
-                    passed
-                      ? "bg-green-50 text-green-700"
-                      : isActive
-                        ? "bg-electric-100 text-electric-700"
-                        : "bg-white/60 text-ink-500"
-                  }`}
-                >
-                  <span aria-hidden="true">{passed ? "✅" : isActive ? "✏️" : "🔒"}</span>
-                  <span className="font-medium">{w.theme}</span>
-                  {locked && (
-                    <span className="ml-auto text-xs">Unlocks after this week</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      )}
+      <div>
+        <p className="mb-4 text-center font-heading text-lg font-semibold text-ink-700">
+          Homework Roadmap
+        </p>
+        <ul className="mx-auto flex max-w-xl flex-col gap-2">
+          {weeks.map((w) => {
+            const style = STATUS_STYLE[w.status];
+            return (
+              <li
+                key={w.id}
+                className={`flex items-center gap-3 rounded-2xl px-5 py-3 ${style.className}`}
+              >
+                <span aria-hidden="true">{style.icon}</span>
+                <span className="font-medium">{w.theme}</span>
+                {w.status === "scheduled" && (
+                  <span className="ml-auto text-xs">Opens {formatOpensOn(w.opensOn)}</span>
+                )}
+                {w.status === "locked" && (
+                  <span className="ml-auto text-xs">Finish the week before first</span>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
