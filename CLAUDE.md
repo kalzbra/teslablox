@@ -342,6 +342,18 @@ teslas-trip/            source journal photos (same treatment)
 - Homepage: added a "This Week's Homework" teaser card and replaced the embedded quiz with links
   into featured games.
 
+## Decisions locked in (2026-10-27, night) — real homework content
+
+- `api/src/weeks.ts` now holds four real weeks (20 questions each) mixing six subjects: Science,
+  Math, Japanese (romaji), English, Geography, Tech. Tesla is 9 and sharp; explanations give a
+  "why" or memory trick. Type-answer questions use `accept` for alternative spellings.
+- **`api/src/weeks.ts` (with answers) is intentionally committed to the PUBLIC repo.** The user
+  considered it and decided it's fine ("just questions for kids, nothing private"), and it keeps
+  the content backed up. Don't treat it as a leak to fix. The website itself still never receives
+  answers before Tesla answers. The repo stays public (GitHub Free).
+- Deploy order matters when adding subjects: ship the website first (it must know every subject
+  the API can send — `SubjectTag` has a style per subject), then deploy the API.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
