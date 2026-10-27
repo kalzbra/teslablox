@@ -9,7 +9,7 @@
 export const HOMEWORK_API =
   process.env.NEXT_PUBLIC_HOMEWORK_API ?? "https://api.teslariley.com";
 
-export type HomeworkSubject = "Science" | "Math" | "Tech";
+export type HomeworkSubject = "Science" | "Math" | "Tech" | "Japanese" | "English" | "Geography";
 
 export type PublicQuestion = {
   id: string;

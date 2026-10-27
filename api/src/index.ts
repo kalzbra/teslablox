@@ -79,6 +79,9 @@ function grade(question: HomeworkQuestion, answer: string): boolean {
   const given = normalize(answer);
   const expected = normalize(question.answer);
   if (given === expected) return true;
+  if (question.type === "type-answer" && question.accept?.some((a) => normalize(a) === given)) {
+    return true;
+  }
   if (question.type === "type-answer" && given !== "") {
     const g = Number(given.replace(/,/g, ""));
     const e = Number(expected.replace(/,/g, ""));
