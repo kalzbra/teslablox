@@ -363,3 +363,29 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Decisions locked in (2026-10-28) — colourful, kid-readable redesign
+
+- **Fonts**: body text is **Lexend** (designed for reading ease; `--font-lexend`), headings stay
+  Fredoka. Root font size is bumped (`html { font-size: 106.25% }`), body line-height 1.65, and
+  `--color-ink-500` was darkened so secondary text keeps strong contrast.
+- **Colour system**: `src/lib/accents.ts` — 7 accents (electric, coral, mint, spark, violet, berry,
+  sky). `accent(i)` cycles them for lists of cards; `accentNamed(name)` picks one. Every class in
+  an accent is a literal string (including `hover`) because Tailwind only generates classes it
+  can find verbatim in source — never build class names with string replace/concat.
+- **Sections**: `src/components/ui/Band.tsx` — full-width section with wavy SVG edges and an
+  accent tint (`color` prop); without `color` it's a plain padded section. Pages alternate
+  coloured and plain Bands. `SectionHeading` takes a `color` for its eyebrow pill.
+- **Scroll-in reveal** (`.reveal` in `globals.css`): pure CSS scroll-driven animation inside
+  `@supports (animation-timeline: view())` and `prefers-reduced-motion: no-preference`, so it
+  needs no JS and can't cause hydration issues. Side effect: **full-page Playwright screenshots
+  show below-the-fold sections as blank** — scroll and take viewport screenshots instead.
+- **Interactivity**: Favorites are 3D flip cards (hidden face is `inert`); trait chips pop when
+  tapped; the Nikola Tesla page has a "Try the Tesla Coil!" zap toy (`TeslaCoil.tsx`, accurate
+  electricity facts only). `useConfetti()` (`src/components/Confetti.tsx`) celebrates a perfect
+  homework score and wins in Sudoku, Slide Puzzle, Tic-Tac-Toe and Rocket Word Guess — `fire()`
+  must only be called from an event handler (it uses `Math.random()`).
+- **Navbar**: full desktop nav only at `xl`+ (9 items didn't fit at `lg` and wrapped onto two
+  lines); below that a "Menu" button opens a grid of coloured tiles.
+- **Local testing gotcha**: `out/` has `about.html`, not `about/index.html`, so a plain
+  `python3 -m http.server` needs `.html` URLs (`/about.html`) — `/about/` silently 404s.

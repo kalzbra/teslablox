@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import Container from "@/components/ui/Container";
+import Band from "@/components/ui/Band";
+import TeslaCoil from "@/components/TeslaCoil";
+import { accent } from "@/lib/accents";
 import SectionHeading from "@/components/ui/SectionHeading";
 import NikolaTeslaCard from "@/components/NikolaTeslaCard";
 import ExternalLink from "@/components/ui/ExternalLink";
@@ -18,65 +20,69 @@ export const metadata: Metadata = {
 
 export default function NikolaTeslaPage() {
   return (
-    <Container className="py-16">
-      <SectionHeading eyebrow="Nikola Tesla" title="Nikola Tesla ⚡" />
+    <>
+      <Band>
+        <SectionHeading eyebrow="Nikola Tesla" title="Nikola Tesla ⚡" color="sky" />
+        <div className="reveal mx-auto max-w-3xl text-center">
+          <h2 className="font-heading text-3xl font-bold text-electric-700">Who Was Nikola Tesla?</h2>
+          <p className="mt-3 text-xl text-ink-700">{whoWasNikolaTesla}</p>
+        </div>
+      </Band>
 
-      <div className="mx-auto max-w-3xl text-center">
-        <h2 className="font-heading text-2xl font-semibold text-ink-700">
-          Who Was Nikola Tesla?
-        </h2>
-        <p className="mt-3 text-lg text-ink-500">{whoWasNikolaTesla}</p>
-      </div>
-
-      <div className="mt-16">
+      <Band color="sky">
         <SectionHeading title="Things Nikola Tesla Is Famous For" />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {nikolaTeslaFacts.map((fact) => (
-            <NikolaTeslaCard key={fact.slug} fact={fact} />
+          {nikolaTeslaFacts.map((fact, i) => (
+            <NikolaTeslaCard key={fact.slug} fact={fact} index={i} />
           ))}
         </div>
-      </div>
+      </Band>
 
-      <div className="mx-auto mt-16 max-w-md rounded-card bg-white/90 p-8 text-center shadow-card ring-1 ring-ink-700/5">
-        <h2 className="mb-4 font-heading text-xl font-semibold text-ink-700">
-          The Tesla Connection
-        </h2>
-        <div className="flex flex-col items-center gap-2 text-ink-500">
-          {teslaConnection.map((line, i) => (
-            <div key={line} className="flex flex-col items-center gap-2">
-              <p
-                className={
-                  i % 2 === 0
-                    ? "font-heading text-lg font-semibold text-ink-700"
-                    : "text-sm"
-                }
-              >
-                {line}
-              </p>
-              {i < teslaConnection.length - 1 && (
-                <span aria-hidden="true" className="text-electric-400">
-                  ↓
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-        <p className="mt-4 text-sm text-ink-500">
+      <Band>
+        <TeslaCoil />
+      </Band>
+
+      <Band color="spark">
+        <SectionHeading title="The Tesla Connection 🔗" color="spark" />
+        <ol className="reveal mx-auto flex max-w-md flex-col items-center gap-2">
+          {teslaConnection.map((line, i) => {
+            const a = accent(i + 1);
+            return (
+              <li key={line} className="flex w-full flex-col items-center gap-2">
+                <p
+                  className={`w-full rounded-2xl px-5 py-3 text-center shadow-card ${
+                    i % 2 === 0 ? `${a.solid} font-heading text-xl font-bold` : `bg-white ${a.text} font-semibold`
+                  }`}
+                >
+                  {line}
+                </p>
+                {i < teslaConnection.length - 1 && (
+                  <span aria-hidden="true" className="text-2xl text-spark-700">
+                    ⬇
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+        <p className="mx-auto mt-6 max-w-md text-center text-ink-700">
           Nikola Tesla&apos;s curiosity and love of invention are part of the inspiration behind
           Tesla&apos;s name — not a promise about what he must become.
         </p>
-      </div>
+      </Band>
 
-      <div className="mx-auto mt-16 max-w-xl text-center">
-        <h2 className="font-heading text-xl font-semibold text-ink-700">Learn More</h2>
-        <ul className="mt-4 flex flex-col items-center gap-2">
-          {nikolaTeslaLearnMore.map((link) => (
-            <li key={link.href}>
-              <ExternalLink href={link.href}>{link.label}</ExternalLink>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Container>
+      <Band>
+        <div className="mx-auto max-w-xl text-center">
+          <h2 className="font-heading text-2xl font-bold text-ink-700">Learn More 📚</h2>
+          <ul className="mt-4 flex flex-col items-center gap-2">
+            {nikolaTeslaLearnMore.map((link) => (
+              <li key={link.href}>
+                <ExternalLink href={link.href}>{link.label}</ExternalLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Band>
+    </>
   );
 }

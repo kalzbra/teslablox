@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { useConfetti } from "@/components/Confetti";
 import { randomInt } from "@/lib/use-best-score";
 
 const WORDS: { word: string; hint: string }[] = [
@@ -34,6 +35,7 @@ export default function RocketWordGuess() {
   const [guessed, setGuessed] = useState<Set<string>>(new Set());
   const [showHint, setShowHint] = useState(false);
   const [streak, setStreak] = useState(0);
+  const { fire, confetti } = useConfetti();
 
   const { word, hint } = WORDS[index];
   const misses = [...guessed].filter((l) => !word.includes(l)).length;
@@ -47,8 +49,10 @@ export default function RocketWordGuess() {
     setGuessed(next);
     const nowWon = word.split("").every((l) => next.has(l));
     const nowMisses = [...next].filter((l) => !word.includes(l)).length;
-    if (nowWon) setStreak((s) => s + 1);
-    else if (nowMisses >= FUEL) setStreak(0);
+    if (nowWon) {
+      setStreak((s) => s + 1);
+      fire();
+    } else if (nowMisses >= FUEL) setStreak(0);
   }
 
   function nextWord() {
@@ -98,6 +102,7 @@ export default function RocketWordGuess() {
         </button>
       )}
 
+      {confetti}
       {won && (
         <p className="mt-4 font-heading text-xl font-semibold text-green-600 animate-fade-up">
           Blast off! You got it! 🎉 {streak > 1 ? `(${streak} in a row!)` : ""}

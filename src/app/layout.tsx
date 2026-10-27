@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fredoka, Nunito } from "next/font/google";
+import { Fredoka, Lexend } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -10,8 +10,8 @@ const fredoka = Fredoka({
   weight: ["500", "600", "700"],
 });
 
-const nunito = Nunito({
-  variable: "--font-nunito",
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
 });
 
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${fredoka.variable} ${nunito.variable} h-full antialiased`}
+      className={`${fredoka.variable} ${lexend.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-cream-50 text-ink-700">
         <a

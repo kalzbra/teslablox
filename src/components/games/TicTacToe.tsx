@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { useConfetti } from "@/components/Confetti";
 
 type Cell = "X" | "O" | null;
 const LINES = [
@@ -56,6 +57,7 @@ export default function TicTacToe() {
   const [hard, setHard] = useState(false);
   const [thinking, setThinking] = useState(false);
   const [tally, setTally] = useState({ you: 0, computer: 0, ties: 0 });
+  const { fire, confetti } = useConfetti();
 
   const win = winner(board);
   const full = board.every(Boolean);
@@ -63,8 +65,10 @@ export default function TicTacToe() {
 
   function finish(final: Cell[]) {
     const w = winner(final);
-    if (w?.mark === "X") setTally((t) => ({ ...t, you: t.you + 1 }));
-    else if (w?.mark === "O") setTally((t) => ({ ...t, computer: t.computer + 1 }));
+    if (w?.mark === "X") {
+      setTally((t) => ({ ...t, you: t.you + 1 }));
+      fire();
+    } else if (w?.mark === "O") setTally((t) => ({ ...t, computer: t.computer + 1 }));
     else if (final.every(Boolean)) setTally((t) => ({ ...t, ties: t.ties + 1 }));
   }
 
@@ -99,6 +103,7 @@ export default function TicTacToe() {
 
   return (
     <Card className="mx-auto max-w-lg p-6 text-center sm:p-8">
+      {confetti}
       <div className="flex justify-center gap-2" role="group" aria-label="Difficulty">
         {[false, true].map((h) => (
           <button

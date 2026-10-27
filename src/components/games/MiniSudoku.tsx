@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { useConfetti } from "@/components/Confetti";
 import { shuffle } from "@/lib/use-best-score";
 
 type Size = { n: number; boxRows: number; boxCols: number; blanks: number; label: string };
@@ -77,6 +78,7 @@ export default function MiniSudoku() {
   const [puzzle, setPuzzle] = useState<Puzzle>(INITIAL);
   const [cells, setCells] = useState<(number | null)[]>(INITIAL.givens);
   const [selected, setSelected] = useState<number | null>(null);
+  const { fire, confetti } = useConfetti();
 
   const { size } = puzzle;
   const bad = conflicts(cells, size);
@@ -91,7 +93,9 @@ export default function MiniSudoku() {
 
   function place(value: number | null) {
     if (selected === null || puzzle.givens[selected] !== null || solved) return;
-    setCells((c) => c.map((v, i) => (i === selected ? value : v)));
+    const next = cells.map((v, i) => (i === selected ? value : v));
+    setCells(next);
+    if (next.every((v) => v !== null) && conflicts(next, size).size === 0) fire();
   }
 
   return (
@@ -128,6 +132,7 @@ export default function MiniSudoku() {
         })}
       </div>
 
+      {confetti}
       {solved ? (
         <p className="mt-5 font-heading text-2xl font-semibold text-green-600 animate-fade-up">
           Solved it! 🧩🎉

@@ -36,6 +36,7 @@ export default function KabaleTripPage() {
         <SectionHeading
           align="left"
           eyebrow="Tesla's Original Writing"
+          color="coral"
           title="The Memory Book, As Tesla Wrote It"
           subtitle="Tesla wrote, photocopied, and printed this book himself with his grandmother's help. Tap any page to see it larger."
         />
@@ -46,6 +47,7 @@ export default function KabaleTripPage() {
         <SectionHeading
           align="left"
           eyebrow="Cleaned-Up Version"
+          color="mint"
           title="My Trip to Kabale"
           subtitle="The same story, tidied up for easy reading — Tesla's words, sequence, and voice are kept exactly as he wrote them."
         />
@@ -56,7 +58,7 @@ export default function KabaleTripPage() {
       </div>
 
       <div className="mt-20">
-        <SectionHeading align="left" eyebrow="Adventure Timeline" title="How the Trip Unfolded" />
+        <SectionHeading align="left" eyebrow="Adventure Timeline" title="How the Trip Unfolded" color="violet" />
         <AdventureTimeline steps={kabaleTimeline} />
       </div>
     </Container>

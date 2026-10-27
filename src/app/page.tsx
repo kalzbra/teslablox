@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Container from "@/components/ui/Container";
+import Band from "@/components/ui/Band";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import HeroSection from "@/components/HeroSection";
@@ -15,6 +15,7 @@ import { cousins } from "@/data/family";
 import { dreams } from "@/data/dreams";
 import { nikolaTeslaIntro } from "@/data/nikola-tesla";
 import { kabaleMeta } from "@/data/trip-kabale";
+import { accent } from "@/lib/accents";
 import { heroPhotos, homepagePhotoSelection, tripPages } from "@/lib/photos";
 
 const FEATURED_GAMES = [
@@ -34,58 +35,58 @@ export default function Home() {
     <>
       <HeroSection photos={hero} />
 
-      <Container className="py-16">
-        <SectionHeading eyebrow="Quick Intro" title="Meet Tesla" />
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-lg text-ink-500">{bio.full[0]}</p>
+      <Band>
+        <SectionHeading eyebrow="Quick Intro" title="Meet Tesla 👋" color="coral" />
+        <div className="reveal mx-auto max-w-3xl text-center">
+          <p className="text-xl text-ink-700">{bio.full[0]}</p>
           <div className="mt-6">
-            <Button href="/about" variant="electric">
+            <Button href="/about" variant="coral">
               Read Tesla&apos;s Full Story
             </Button>
           </div>
         </div>
-      </Container>
 
-      <Container className="py-8">
-        <div className="mx-auto flex max-w-3xl flex-col items-center gap-5 rounded-card bg-gradient-to-br from-electric-500 to-electric-700 p-8 text-center text-white shadow-card-lg sm:flex-row sm:text-left">
-          <span className="text-6xl" aria-hidden="true">
+        <div className="reveal mx-auto mt-14 flex max-w-3xl flex-col items-center gap-5 rounded-card bg-gradient-to-br from-electric-500 via-violet-500 to-berry-500 p-8 text-center text-white shadow-card-lg sm:flex-row sm:text-left">
+          <span className="animate-float text-6xl" aria-hidden="true">
             🎓
           </span>
           <div className="flex-1">
             <p className="font-heading text-sm font-semibold uppercase tracking-wide text-spark-300">
               New every week
             </p>
-            <p className="mt-1 font-heading text-2xl font-semibold">
+            <p className="mt-1 font-heading text-2xl font-bold">
               This Week&apos;s Homework from Daddy in Japan
             </p>
-            <p className="mt-1 text-white/85">
-              Science, math, and tech challenges — get a perfect score to unlock the next week!
+            <p className="mt-1 text-white/90">
+              Science, math, Japanese, English, and more — get a perfect score to unlock the next
+              week!
             </p>
           </div>
           <Button href="/homework" variant="spark">
             Open Homework →
           </Button>
         </div>
-      </Container>
+      </Band>
 
-      <Container className="py-16">
+      <Band color="spark">
         <SectionHeading
           eyebrow="Things Tesla Loves"
           title="Things Tesla Loves ❤️"
           subtitle="Tap a card to explore each favorite thing."
+          color="coral"
         />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {favorites
             .filter((f) => homepageHighlightSlugs.includes(f.slug as (typeof homepageHighlightSlugs)[number]))
-            .map((f) => (
-              <FavoriteHighlightLink key={f.slug} favorite={f} />
+            .map((f, i) => (
+              <FavoriteHighlightLink key={f.slug} favorite={f} index={i} />
             ))}
         </div>
-      </Container>
+      </Band>
 
-      <Container className="py-16">
-        <SectionHeading eyebrow="Tesla's Adventures 🌍" title="Where Tesla Has Been" />
-        <div className="mx-auto max-w-xl">
+      <Band>
+        <SectionHeading eyebrow="Tesla's Adventures 🌍" title="Where Tesla Has Been" color="mint" />
+        <div className="reveal mx-auto max-w-md">
           {kabaleCover && (
             <AdventureCard
               href="/adventures/kabale"
@@ -96,10 +97,10 @@ export default function Home() {
             />
           )}
         </div>
-      </Container>
+      </Band>
 
-      <Container className="py-16">
-        <SectionHeading eyebrow="Tesla's Dreams 🚀" title="YouTube Star or Scientist?" />
+      <Band color="violet">
+        <SectionHeading eyebrow="Tesla's Dreams 🚀" title="YouTube Star or Scientist?" color="violet" />
         <div className="grid gap-6 sm:grid-cols-2">
           <DreamCard
             emoji="🎥"
@@ -114,86 +115,95 @@ export default function Home() {
             body={dreams.dad.body}
           />
         </div>
-        <div className="mt-6 text-center">
-          <Button href="/dreams" variant="ghost">
+        <div className="mt-8 text-center">
+          <Button href="/dreams" variant="electric">
             See the Fun Twist
           </Button>
         </div>
-      </Container>
+      </Band>
 
-      <Container className="py-16">
-        <SectionHeading eyebrow={nikolaTeslaIntro.heading} title="Why Is He Called Tesla? ⚡" />
-        <div className="mx-auto max-w-3xl text-center">
-          <p className="text-lg text-ink-500">{nikolaTeslaIntro.body[0]}</p>
+      <Band>
+        <SectionHeading eyebrow={nikolaTeslaIntro.heading} title="Why Is He Called Tesla? ⚡" color="sky" />
+        <div className="reveal mx-auto max-w-3xl text-center">
+          <p className="text-xl text-ink-700">{nikolaTeslaIntro.body[0]}</p>
           <div className="mt-6">
             <Button href="/nikola-tesla" variant="electric">
-              Meet Nikola Tesla
+              Meet Nikola Tesla ⚡
             </Button>
           </div>
         </div>
-      </Container>
+      </Band>
 
       {highlightPhotos.length > 0 && (
-        <Container className="py-16">
-          <SectionHeading eyebrow="Photo Highlight" title="A Few Favorite Moments" />
+        <Band color="mint">
+          <SectionHeading eyebrow="Photo Highlight" title="A Few Favorite Moments 📸" color="mint" />
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {highlightPhotos.map((photo) => (
-              <div key={photo.id} className="overflow-hidden rounded-card shadow-card">
+            {highlightPhotos.map((photo, i) => (
+              <div
+                key={photo.id}
+                className={`reveal overflow-hidden rounded-card bg-white p-2 shadow-card transition-transform duration-200 hover:rotate-0 hover:scale-105 motion-reduce:hover:scale-100 ${
+                  i % 2 === 0 ? "-rotate-2" : "rotate-2"
+                }`}
+              >
                 <ResponsivePhoto
                   photo={photo}
                   alt={photo.alt}
                   sizes="(min-width: 640px) 25vw, 50vw"
-                  className="aspect-square w-full object-cover"
+                  className="aspect-square w-full rounded-2xl object-cover"
                 />
               </div>
             ))}
           </div>
-          <div className="mt-6 text-center">
-            <Button href="/gallery" variant="ghost">
+          <div className="mt-8 text-center">
+            <Button href="/gallery" variant="electric">
               Visit the Full Gallery
             </Button>
           </div>
-        </Container>
+        </Band>
       )}
 
-      <Container className="py-16">
-        <SectionHeading eyebrow="Family" title="Meet Tesla's Cousins 👨‍👩‍👧‍👦" />
+      <Band>
+        <SectionHeading eyebrow="Family" title="Meet Tesla's Cousins 👨‍👩‍👧‍👦" color="berry" />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {cousins.map((name) => (
-            <FamilyCard key={name} name={name} />
+          {cousins.map((name, i) => (
+            <FamilyCard key={name} name={name} index={i} />
           ))}
         </div>
-      </Container>
+      </Band>
 
-      <Container className="py-16">
+      <Band color="berry">
         <SectionHeading
           eyebrow="Fun Zone 🎮"
           title="Play, Discover, and Explore"
           subtitle="13 games and puzzles — here are a few to start with."
+          color="berry"
         />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {FEATURED_GAMES.map((g) => (
-            <Link
-              key={g.id}
-              href={`/fun-zone#${g.id}`}
-              className="flex flex-col items-center gap-2 rounded-card bg-white/90 p-5 text-center shadow-card ring-1 ring-ink-700/5 transition-transform duration-200 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
-            >
-              <span className="text-4xl" aria-hidden="true">
-                {g.emoji}
-              </span>
-              <span className="font-heading text-sm font-semibold text-ink-700">{g.title}</span>
-            </Link>
-          ))}
+          {FEATURED_GAMES.map((g, i) => {
+            const a = accent(i + 2);
+            return (
+              <Link
+                key={g.id}
+                href={`/fun-zone#${g.id}`}
+                className={`reveal group flex flex-col items-center gap-2 rounded-card bg-white p-5 text-center shadow-card ring-2 transition-transform duration-200 hover:-translate-y-1 motion-reduce:hover:translate-y-0 ${a.ring}`}
+              >
+                <span className="wiggle text-5xl" aria-hidden="true">
+                  {g.emoji}
+                </span>
+                <span className={`font-heading text-base font-bold ${a.text}`}>{g.title}</span>
+              </Link>
+            );
+          })}
         </div>
         <div className="mt-12">
           <RandomFact />
         </div>
         <div className="mt-10 text-center">
-          <Button href="/fun-zone" variant="electric">
+          <Button href="/fun-zone" variant="coral">
             See All Games →
           </Button>
         </div>
-      </Container>
+      </Band>
     </>
   );
 }

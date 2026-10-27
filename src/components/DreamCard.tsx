@@ -1,5 +1,3 @@
-import Card from "@/components/ui/Card";
-
 export default function DreamCard({
   emoji,
   eyebrow,
@@ -12,15 +10,15 @@ export default function DreamCard({
   body: string;
 }) {
   return (
-    <Card className="flex h-full flex-col gap-3 p-7">
-      <span aria-hidden="true" className="text-4xl">
+    <div className="reveal group flex h-full flex-col gap-3 rounded-card bg-white p-7 shadow-card-lg ring-4 ring-white/60">
+      <span aria-hidden="true" className="wiggle text-5xl">
         {emoji}
       </span>
-      <p className="font-heading text-sm font-semibold uppercase tracking-wide text-electric-600">
+      <p className="w-fit rounded-full bg-violet-500 px-3 py-1 font-heading text-sm font-semibold uppercase tracking-wide text-white">
         {eyebrow}
       </p>
-      <p className="font-heading text-xl font-semibold italic text-ink-700">“{quote}”</p>
-      <p className="text-ink-500">{body}</p>
-    </Card>
+      <p className="font-heading text-2xl font-semibold italic text-violet-700">“{quote}”</p>
+      <p className="text-ink-700">{body}</p>
+    </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore, type ReactNode } from "react";
 import type { Photo } from "@/lib/photos";
+import { accent } from "@/lib/accents";
 import Quiz from "@/components/Quiz";
 import MemoryMatch from "@/components/MemoryMatch";
 import WordScramble from "@/components/WordScramble";
@@ -99,21 +100,28 @@ export default function GameHub({ photos, puzzlePhoto }: { photos: Photo[]; puzz
 
   return (
     <div className="flex flex-col gap-10">
-      {GROUPS.map((group) => (
+      {GROUPS.map((group, gi) => (
         <section key={group.title}>
-          <h2 className="mb-4 font-heading text-xl font-semibold text-ink-700">{group.title}</h2>
+          <h2
+            className={`mb-4 w-fit rounded-2xl px-4 py-1 font-heading text-2xl font-bold ${accent(gi * 2).soft} ${accent(gi * 2).text}`}
+          >
+            {group.title}
+          </h2>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {group.games.map((g) => (
+            {group.games.map((g, i) => (
               <li key={g.id}>
                 <a
                   href={`#${g.id}`}
-                  className="relative flex h-full items-start gap-4 rounded-card bg-white/90 p-5 shadow-card ring-1 ring-ink-700/5 transition-transform duration-200 hover:-translate-y-1 motion-reduce:hover:translate-y-0"
+                  className={`reveal group relative flex h-full items-start gap-4 rounded-card bg-white p-5 shadow-card ring-2 transition-transform duration-200 hover:-translate-y-1 hover:-rotate-1 motion-reduce:hover:translate-y-0 motion-reduce:hover:rotate-0 ${accent(gi * 2 + i).ring}`}
                 >
-                  <span className="text-4xl" aria-hidden="true">
+                  <span
+                    className={`wiggle flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-3xl ${accent(gi * 2 + i).soft}`}
+                    aria-hidden="true"
+                  >
                     {g.emoji}
                   </span>
                   <span>
-                    <span className="block font-heading text-lg font-semibold text-ink-700">{g.title}</span>
+                    <span className="block font-heading text-xl font-bold text-ink-700">{g.title}</span>
                     <span className="block text-sm text-ink-500">{g.blurb}</span>
                   </span>
                   {g.isNew && (

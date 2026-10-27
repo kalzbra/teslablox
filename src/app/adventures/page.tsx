@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Container from "@/components/ui/Container";
+import Band from "@/components/ui/Band";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AdventureCard from "@/components/AdventureCard";
 import { kabaleMeta } from "@/data/trip-kabale";
@@ -14,8 +14,8 @@ export default function AdventuresPage() {
   const kabaleCover = tripPages[0];
 
   return (
-    <Container className="py-16">
-      <SectionHeading eyebrow="Adventures" title="Tesla's Adventures 🌍" />
+    <Band color="mint">
+      <SectionHeading eyebrow="Adventures" title="Tesla's Adventures 🌍" color="mint" />
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {kabaleCover && (
           <AdventureCard
@@ -27,9 +27,9 @@ export default function AdventuresPage() {
           />
         )}
       </div>
-      <p className="mt-10 text-center text-ink-500">
+      <p className="mt-10 text-center text-lg font-medium text-mint-700">
         More adventures will appear here as Tesla writes more memory books! ✨
       </p>
-    </Container>
+    </Band>
   );
 }

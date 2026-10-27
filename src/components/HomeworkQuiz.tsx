@@ -17,6 +17,7 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import SubjectTag from "@/components/SubjectTag";
 import KeepExploring from "@/components/KeepExploring";
+import { useConfetti } from "@/components/Confetti";
 
 function formatCountdown(ms: number): string {
   const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
@@ -43,6 +44,7 @@ export default function HomeworkQuiz({ week, onDone }: HomeworkQuizProps) {
   const [result, setResult] = useState<FinishResult | null>(null);
   const [retryAt, setRetryAt] = useState<number | null>(week.retryAt);
   const [now, setNow] = useState<number | null>(null);
+  const { fire, confetti } = useConfetti(120);
 
   // Countdown tick. Only runs while a cooldown exists; `now` stays null until the first tick so
   // nothing time-dependent is rendered during the static prerender.
@@ -127,6 +129,7 @@ export default function HomeworkQuiz({ week, onDone }: HomeworkQuizProps) {
       setRetryAt(done.retryAt);
       setPhase("result");
       window.dispatchEvent(new Event(HOMEWORK_UPDATED_EVENT));
+      if (done.perfect) fire();
     } catch (err) {
       handleError(err);
     } finally {
@@ -178,6 +181,7 @@ export default function HomeworkQuiz({ week, onDone }: HomeworkQuizProps) {
     const pct = Math.round((result.score / result.outOf) * 100);
     return (
       <Card className="mx-auto max-w-xl p-8 text-center">
+        {confetti}
         <p className="font-heading text-3xl font-semibold text-ink-700">
           You scored {result.score} / {result.outOf}!{" "}
           {result.perfect ? "🌟" : pct >= 50 ? "🎉" : "💪"}
@@ -306,7 +310,7 @@ export default function HomeworkQuiz({ week, onDone }: HomeworkQuizProps) {
         >
           <p className={`font-semibold ${current.correct ? "text-green-700" : "text-coral-600"}`}>
             {current.correct
-              ? "Correct! 🎉"
+              ? "Correct! 🎉 ⚡"
               : `Not quite — the answer was "${current.correctAnswer}."`}
           </p>
           <p className="mt-1 text-sm text-ink-500">💡 {current.explanation}</p>

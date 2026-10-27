@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { useConfetti } from "@/components/Confetti";
 import { largestSrc, type Photo } from "@/lib/photos";
 import { useBestScore } from "@/lib/use-best-score";
 
@@ -54,6 +55,7 @@ export default function SlidingPuzzle({ photo }: { photo: Photo }) {
   const offsetY = (bgH - BOARD) / 2;
   const src = largestSrc({ ...photo, widths: photo.widths.filter((w) => w <= 800) });
 
+  const { fire, confetti } = useConfetti();
   const solved = playing && tiles.every((t, i) => t === SOLVED[i]);
 
   function start() {
@@ -71,7 +73,10 @@ export default function SlidingPuzzle({ photo }: { photo: Photo }) {
     [next[empty], next[index]] = [next[index], next[empty]];
     setTiles(next);
     setMoves(moves + 1);
-    if (next.every((t, i) => t === SOLVED[i])) setNewBest(record(moves + 1));
+    if (next.every((t, i) => t === SOLVED[i])) {
+      setNewBest(record(moves + 1));
+      fire();
+    }
   }
 
   return (
@@ -136,6 +141,7 @@ export default function SlidingPuzzle({ photo }: { photo: Photo }) {
         {playing ? `Moves: ${moves}` : "Here's the picture you'll be putting together!"}
         {best !== null && ` · Best: ${best} moves`}
       </p>
+      {confetti}
       {solved && (
         <p className="mt-2 font-heading text-2xl font-semibold text-green-600 animate-fade-up">
           You did it in {moves} moves! {newBest ? "🏆 New best!" : "🎉"}
