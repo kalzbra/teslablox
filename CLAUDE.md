@@ -206,6 +206,35 @@ teslas-trip/            source journal photos (same treatment)
   until some other interaction reveals it (e.g. Memory Match's initial deck order — all cards
   render face-down identically regardless of what's underneath, so no mismatch is possible there).
 
+## Decisions locked in (2026-10-27)
+
+- **Custom domain**: `teslariley.com`, bought on Cloudflare. Set up as a GitHub Pages custom
+  domain (repo Settings → Pages → Custom domain), **not** a code change — GitHub Actions-based
+  Pages deployments don't need/use a `CNAME` file in the repo (confirmed against GitHub's docs;
+  "no CNAME file is created, and any existing CNAME file is ignored and is not required" for
+  Actions-based publishing). Because the custom domain serves from the root (not
+  `/teslablox/`), `.github/workflows/deploy.yml` no longer sets `NEXT_PUBLIC_BASE_PATH` — if this
+  ever moves back to bare `<user>.github.io/teslablox/` hosting without a custom domain, re-add
+  `env: { NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }} }` to the build step.
+- Buying a custom domain does **not** make the GitHub repo/code private — those are unrelated
+  settings. The user confirmed family-only viewing is fine for now and privacy isn't a current
+  concern beyond what's already enforced (no EXIF/GPS, no exact DOB, etc. — see §"Privacy rules"
+  above, which still apply regardless of who's expected to actually visit the site).
+- **"This Week's Homework from Daddy in Japan" page** (`/homework`, nav label "Homework 🎓",
+  between Nikola Tesla and Fun Zone): a weekly science/math/tech quiz the user (Tesla's dad,
+  based in Tokyo) maintains by hand during sessions like this one — see the workflow comment at
+  the top of `src/data/homework.ts`. Score history is intentionally public (user's choice) and
+  shown in a "Daddy's Homework Log" section on the same page. Still placeholder/dummy content as
+  of this decision — swap in real weekly questions once approved.
+- **"Keep Exploring" links** (`src/components/KeepExploring.tsx`, data in
+  `src/data/learning-resources.ts`): shown on the homework quiz's score screen, pulling
+  curated external links for whichever `LearningCategory` topics that week's `HomeworkWeek.topics`
+  is tagged with. Every URL in `learning-resources.ts` was individually checked (real, live, free,
+  kid-appropriate) before being added — do the same before adding more. Two early candidates
+  (DK Find Out, Premier League Primary Stars) were dropped after verification showed DK Find Out
+  had been retired as a free standalone site and Primary Stars is teacher/login-gated rather than
+  directly kid-browsable — don't re-add either without re-checking current state.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

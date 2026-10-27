@@ -12,5 +12,6 @@ export const navItems: NavItem[] = [
   { label: "Gallery", href: "/gallery", emoji: "📸" },
   { label: "Dreams", href: "/dreams", emoji: "🚀" },
   { label: "Nikola Tesla", href: "/nikola-tesla", emoji: "🔬" },
+  { label: "Homework", href: "/homework", emoji: "🎓" },
   { label: "Fun Zone", href: "/fun-zone", emoji: "🎮" },
 ];

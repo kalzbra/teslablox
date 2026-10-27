@@ -25,6 +25,7 @@
 
   --color-violet-300: #d9c9ff;
   --color-violet-500: #8b6bd9;
+  --color-violet-700: #5b3fa0;
 
   --color-cream-50: #fffdf7;
   --color-cream-100: #fdf8ee;
@@ -62,6 +63,7 @@
 
   --color-violet-300: var(--color-violet-300);
   --color-violet-500: var(--color-violet-500);
+  --color-violet-700: var(--color-violet-700);
 
   --color-cream-50: var(--color-cream-50);
   --color-cream-100: var(--color-cream-100);

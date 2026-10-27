@@ -27,11 +27,10 @@ jobs:
 
       - run: npm ci
 
-      # Project-page hosting (https://<user>.github.io/<repo>/) needs Next's basePath set to
-      # "/<repo-name>". Using a custom domain or a <user>.github.io repo? Delete this line.
+      # Serving from a custom domain (teslariley.com) at the root — no basePath needed. If this
+      # ever moves back to project-page hosting (https://<user>.github.io/<repo>/) without a
+      # custom domain, re-add: env: { NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }} }
       - run: npm run build
-        env:
-          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
