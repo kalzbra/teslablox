@@ -235,6 +235,63 @@ teslas-trip/            source journal photos (same treatment)
   had been retired as a free standalone site and Primary Stars is teacher/login-gated rather than
   directly kid-browsable — don't re-add either without re-checking current state.
 
+## Decisions locked in (2026-10-27, later same day)
+
+- **Homework page redesigned around sequential locking, a password gate, and a retry cooldown**
+  (user wants Tesla to spend real time on each week, and wants this gated from casual visitors):
+  - `homeworkWeeks` (`src/data/homework.ts`) is now stored **chronologically ascending** (oldest
+    first) — this is a breaking change from the original "prepend newest" convention, needed
+    because unlock order now matters mechanically. APPEND new weeks to the END of the array.
+  - Weeks with no `questions` (pure history predating this feature, e.g. "Computers 101 Week")
+    sit outside the lock sequence entirely — only weeks with `questions` participate.
+  - Device-local pass/fail tracking lives in `src/lib/homework-progress.ts` (localStorage, key
+    `teslablox:homework-progress`) — intentionally **separate** from the hand-curated public
+    `HomeworkWeek.result` log, so the public "Daddy's Homework Log" stays visible to every
+    visitor regardless of device, while the unlock sequence only works on whichever device
+    actually took the quiz. This only works if Tesla reliably uses the same device/browser for
+    homework; there's no cross-device sync without a real backend.
+  - `HomeworkSequence.tsx` owns "which week is active" (first not-yet-100%-passed week in
+    sequence) and renders a "Homework Roadmap" list (✅ passed / ✏️ active / 🔒 locked). It
+    refreshes its view of progress only when explicitly told to (`HomeworkQuiz`'s `onPassed`
+    callback, fired when the user clicks "See Next Week's Homework →" after a perfect score) —
+    deliberately NOT a live store subscription, so the celebration screen doesn't get yanked away
+    the instant the score hits 100%.
+  - `HomeworkQuiz` needs `key={activeWeek.id}` where it's rendered (in `HomeworkSequence`) — this
+    forces a fresh component instance (and thus fresh internal step/score state) whenever the
+    active week changes. Without the key, React reuses the same instance and the quiz would keep
+    showing stale state from the previous week.
+  - Retry cooldown is `RETRY_COOLDOWN_MINUTES` (currently 15) in `src/data/homework.ts` — a
+    non-100% finish starts a countdown (computed from the just-saved attempt's timestamp) before
+    "Try Again" is clickable again. Timer ticks are plain `useEffect` + `setInterval`, which only
+    ever run well after initial mount (quiz completion requires real interaction first), so
+    there's no hydration-mismatch risk despite reading `Date.now()`.
+  - Password gate (`HomeworkPasswordGate.tsx`) uses `HOMEWORK_PASSWORD` from
+    `src/data/homework.ts` (currently `daddylovestesla18`) — **this is a soft gate only**, not
+    real security: the check ships inside the public JS bundle and is trivially visible via
+    browser dev tools. It's meant to keep casual visitors out, not withstand a determined
+    technical one. Persisted via localStorage key `teslablox:homework-unlocked`; gates only the
+    interactive quiz section, not the public Homework Log below it.
+  - `HomeworkPasswordGate` is the one piece here that correctly uses `useSyncExternalStore`
+    (its snapshot is a plain boolean, which is reference-stable and genuinely benefits from
+    live updates across tabs) — `HomeworkSequence`'s progress read deliberately does NOT use
+    it, since `loadProgress()` returns a freshly-parsed object every call (breaks
+    `useSyncExternalStore`'s reference-stability contract) and that view intentionally only
+    updates on an explicit refresh, not automatically. Don't "fix" one to look like the other;
+    they're different cases on purpose — see the comments in each file.
+  - New ESLint rule encountered: `react-hooks/set-state-in-effect` flags `setState` called
+    directly in a `useEffect` body, even for the "read an external system once, post-mount"
+    pattern this whole project already relies on for hydration safety. Where
+    `useSyncExternalStore` doesn't cleanly fit (see above), the fix is a scoped
+    `// eslint-disable-next-line react-hooks/set-state-in-effect` placed **immediately above the
+    actual `setState(...)` call** — not above the `useEffect(` line, and not split across a
+    multi-line comment, both of which silently disable the wrong line (hit both mistakes while
+    building this; `npm run lint` catches the "unused eslint-disable directive" warning if the
+    target line is wrong, but only because the real error then reappears elsewhere — always
+    re-run lint after adding one of these).
+  - Added 3 more placeholder weeks (Ocean Explorers, Robots & Machines, Mighty Earth) so there
+    are 4 total in the locked sequence — still placeholder content pending approval, same as the
+    first week.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

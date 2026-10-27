@@ -54,6 +54,23 @@ fall into the "Everyday Tesla" default bucket.
 
 No other page needs to change — the Adventures index and homepage preview are data-driven.
 
+### Updating weekly homework
+
+`/homework` is a locked, sequential weekly quiz Tesla's dad maintains by hand. Everything lives
+in `src/data/homework.ts` — read the comment at the top of that file before editing it; the
+short version:
+
+- `homeworkWeeks` is chronological (oldest first). **Append** a new week to the end with its
+  `questions` and `topics` — it unlocks automatically once Tesla gets 100% on the week before it.
+- After he takes a week, you can add a `result` (score/date/note) to that entry — that's what
+  shows up in the public "Daddy's Homework Log," independent of the automatic unlock tracking.
+- The quiz password (`HOMEWORK_PASSWORD`) and retry cooldown (`RETRY_COOLDOWN_MINUTES`) are also
+  config constants at the top of that file.
+
+The unlock progress itself is tracked client-side (localStorage) on whichever device Tesla
+actually uses — it won't sync across devices without a real backend. See `CLAUDE.md` for the
+full architecture notes if something needs debugging.
+
 ## Content rules worth knowing
 
 - Every fact on this site comes from `tesla_riley_shyaka.md` or from Tesla's own Kabale memory
@@ -88,8 +105,14 @@ below.
 3. Push to `main` (or re-run the workflow from the **Actions** tab) — the site publishes to
    `https://<your-username>.github.io/teslablox/`.
 
-The workflow sets `NEXT_PUBLIC_BASE_PATH` to `/<repo-name>` automatically, which is what makes
-image and asset URLs resolve correctly under that `/teslablox/` subpath — see `next.config.ts`
-and `src/lib/photos.ts`. If you ever move to a custom domain or a `<username>.github.io` repo
-(served from the domain root instead of a subpath), delete the `NEXT_PUBLIC_BASE_PATH` line from
-the workflow and nothing else needs to change.
+The site is served from a custom domain (**teslariley.com**, DNS on Cloudflare) at the root, not
+a `/teslablox/` subpath, so the workflow does **not** set `NEXT_PUBLIC_BASE_PATH` — if this ever
+moves back to bare `<username>.github.io/teslablox/` hosting without a custom domain, re-add
+`env: { NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }} }` to the build step in
+`.github/workflows/deploy.yml` (see `next.config.ts` and `src/lib/photos.ts` for where it's
+consumed).
+
+Custom domain DNS (already set up): four `A` records on `@` pointing at GitHub Pages'
+IPs (`185.199.108.153`, `.109.153`, `.110.153`, `.111.153`), a `CNAME` on `www` pointing at
+`kalzbra.github.io`, all set to **DNS only** (not proxied) in Cloudflare, plus the custom domain
+entered under the repo's **Settings → Pages**.

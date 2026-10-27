@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import type { HomeworkQuestion, HomeworkWeek } from "@/data/homework";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { RETRY_COOLDOWN_MINUTES, type HomeworkQuestion, type HomeworkWeek } from "@/data/homework";
 import { seededShuffle } from "@/lib/seeded-random";
+import { lastAttemptAt, loadProgress, saveAttempt } from "@/lib/homework-progress";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import SubjectTag from "@/components/SubjectTag";
 import KeepExploring from "@/components/KeepExploring";
+
+const COOLDOWN_MS = RETRY_COOLDOWN_MINUTES * 60 * 1000;
 
 function normalize(s: string): string {
   return s.trim().toLowerCase();
@@ -24,16 +27,34 @@ function isCorrect(question: HomeworkQuestion, guess: string): boolean {
   return false;
 }
 
-export default function HomeworkQuiz({ week }: { week: HomeworkWeek }) {
+function formatCountdown(ms: number): string {
+  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
+}
+
+type HomeworkQuizProps = {
+  week: HomeworkWeek;
+  /** Called only when Tesla clicks through after a perfect score — lets the parent advance to
+   * the next week in the sequence on his terms, not the instant he finishes. */
+  onPassed?: () => void;
+};
+
+export default function HomeworkQuiz({ week, onPassed }: HomeworkQuizProps) {
   const [step, setStep] = useState(0);
   const [round, setRound] = useState(0);
   const [guess, setGuess] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(0);
+  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+  const [now, setNow] = useState<number | null>(null);
+  const recordedRef = useRef(false);
 
   const questions = week.questions ?? [];
   const question = questions[step];
   const finished = step >= questions.length;
+  const perfect = finished && questions.length > 0 && score === questions.length;
 
   // Deterministic (not Math.random) so static-export prerender and the client's first render
   // agree — see src/lib/seeded-random.ts and the hydration-mismatch note in CLAUDE.md.
@@ -41,6 +62,39 @@ export default function HomeworkQuiz({ week }: { week: HomeworkWeek }) {
     if (!question || question.type !== "multiple-choice") return [];
     return seededShuffle(question.options, step * 104729 + round * 31 + 7);
   }, [question, step, round]);
+
+  // Records the attempt exactly once per completion, and — if it wasn't a perfect score —
+  // starts the retry cooldown. This only ever runs well after initial mount (finished starts
+  // false and requires several real clicks to reach), so there's no hydration-mismatch risk;
+  // the setState calls below are suppressed for react-hooks/set-state-in-effect because the
+  // cooldown target genuinely depends on an external read (localStorage) combined with a
+  // one-time side effect (saving the attempt) — it can't be derived during render.
+  useEffect(() => {
+    if (!finished || recordedRef.current) return;
+    recordedRef.current = true;
+    saveAttempt(week.id, score, questions.length);
+    if (!perfect) {
+      const progress = loadProgress();
+      const last = lastAttemptAt(progress, week.id) ?? Date.now();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCooldownUntil(last + COOLDOWN_MS);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [finished]);
+
+  // Primes the countdown display immediately instead of waiting a full second for the first
+  // interval tick.
+  useEffect(() => {
+    if (cooldownUntil === null) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setNow(Date.now());
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, [cooldownUntil]);
+
+  const cooldownRemainingMs =
+    cooldownUntil !== null && now !== null ? Math.max(0, cooldownUntil - now) : 0;
+  const inCooldown = cooldownUntil !== null && cooldownRemainingMs > 0;
 
   function submitGuess(value: string) {
     if (submitted || !question) return;
@@ -56,10 +110,14 @@ export default function HomeworkQuiz({ week }: { week: HomeworkWeek }) {
   }
 
   function restart() {
+    if (inCooldown) return;
     setStep(0);
     setGuess("");
     setSubmitted(false);
     setScore(0);
+    setCooldownUntil(null);
+    setNow(null);
+    recordedRef.current = false;
     setRound((r) => r + 1);
   }
 
@@ -76,23 +134,48 @@ export default function HomeworkQuiz({ week }: { week: HomeworkWeek }) {
     return (
       <Card className="mx-auto max-w-xl p-8 text-center">
         <p className="font-heading text-3xl font-semibold text-ink-700">
-          You scored {score} / {questions.length}! {pct >= 80 ? "🌟" : pct >= 50 ? "🎉" : "💪"}
+          You scored {score} / {questions.length}! {perfect ? "🌟" : pct >= 50 ? "🎉" : "💪"}
         </p>
         <p className="mt-2 text-ink-500">
-          {pct === 100
+          {perfect
             ? "Perfect score — amazing work!"
             : pct >= 70
               ? "Great job — you're really getting good at this!"
-              : "Nice try! Learning is all about practice — tell Daddy how you did!"}
+              : "Nice try! Learning is all about practice."}
         </p>
-        <p className="mt-4 text-sm text-ink-500">
-          📞 Don&apos;t forget to tell Daddy your score next time you talk!
-        </p>
-        <div className="mt-6">
-          <Button variant="electric" onClick={restart}>
-            Try Again
-          </Button>
-        </div>
+
+        {perfect ? (
+          <>
+            <p className="mt-4 font-heading text-lg font-semibold text-electric-600 animate-fade-up">
+              🔓 You unlocked next week&apos;s homework!
+            </p>
+            <div className="mt-6">
+              <Button variant="electric" onClick={() => onPassed?.()}>
+                See Next Week&apos;s Homework →
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="mt-4 text-sm text-ink-500">
+              You need a perfect score to unlock next week — give it another shot!
+            </p>
+            {inCooldown ? (
+              <p className="mt-2 text-sm font-medium text-coral-600">
+                ⏳ Take a little break — you can try again in {formatCountdown(cooldownRemainingMs)}
+              </p>
+            ) : (
+              <p className="mt-4 text-sm text-ink-500">
+                📞 Don&apos;t forget to tell Daddy how you&apos;re doing next time you talk!
+              </p>
+            )}
+            <div className="mt-6">
+              <Button variant="electric" onClick={restart} disabled={inCooldown}>
+                Try Again
+              </Button>
+            </div>
+          </>
+        )}
 
         <KeepExploring topics={week.topics ?? []} />
       </Card>

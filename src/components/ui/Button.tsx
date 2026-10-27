@@ -19,11 +19,12 @@ type ButtonProps = {
   variant?: Variant;
   className?: string;
   type?: "button" | "submit";
+  disabled?: boolean;
   "aria-label"?: string;
 };
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-heading text-base font-medium transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:hover:translate-y-0";
+  "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-heading text-base font-medium transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0 motion-reduce:hover:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0";
 
 export default function Button({
   children,
@@ -32,6 +33,7 @@ export default function Button({
   variant = "electric",
   className = "",
   type = "button",
+  disabled = false,
   ...rest
 }: ButtonProps) {
   const classes = `${BASE} ${VARIANT_CLASSES[variant]} ${className}`;
@@ -52,7 +54,7 @@ export default function Button({
   }
 
   return (
-    <button type={type} onClick={onClick} className={classes} {...rest}>
+    <button type={type} onClick={onClick} disabled={disabled} className={classes} {...rest}>
       {children}
     </button>
   );
