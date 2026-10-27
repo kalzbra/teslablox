@@ -975,4 +975,939 @@ export const homeworkWeeks: HomeworkWeek[] = [
       },
     ],
   },
+
+  // ───────────────────────────── Week 5 ─────────────────────────────
+  {
+    id: "2026-11-23",
+    weekOf: "Week of November 23, 2026",
+    opensOn: "2026-11-23",
+    theme: "Game Day Science Week ⚽",
+    dadNote:
+      "Four weeks done — you're on fire! This week is all about sport. Every kick, jump, and splash is secretly science: pushes, pulls, gravity, and friction. Next time you play football, see if you can spot the forces at work! Love, Daddy.",
+    topics: ["Sports", "Physics", "Japanese", "English", "Math", "Geography"],
+    resources: [
+      { kind: "video", title: "Swings, Slides, and Science (SciShow Kids)", description: "Playgrounds are full of forces! Find the pushes, pulls, and gravity hiding in your favourite games.", href: "https://www.youtube.com/watch?v=JvSClZ3vHOI", minutes: 4, },
+      { kind: "site", title: "Friction (BBC Bitesize)", description: "Why do football boots have studs? Learn how friction slows things down and why rough surfaces grip better.", href: "https://www.bbc.co.uk/bitesize/topics/zjrp46f/articles/zcmwkty", },
+      { kind: "video", title: "Defining Gravity (Crash Course Kids)", description: "When you kick a ball high, why does it always come back down? Meet gravity, the pull towards the Earth.", href: "https://www.youtube.com/watch?v=ljRlB6TuMOU", minutes: 3, },
+      { kind: "video", title: "Why Some Balls Don't Bounce (A Moment of Science)", description: "Some balls bounce high and some just go splat. Find out what makes the difference.", href: "https://www.youtube.com/watch?v=ewDXEpyT-tw", minutes: 2, },
+      { kind: "video", title: "Arukou Arukou – Walking Walking (Super Simple Japanese)", description: "Get moving in Japanese! Sing and act out walk, hop, and run — like a warm-up before a match.", href: "https://www.youtube.com/watch?v=WiRbpBwxhfc", minutes: 2, },
+      { kind: "site", title: "What Are Adjectives? (BBC Bitesize)", description: "Describing words make writing exciting — and this lesson uses a football match to show you how.", href: "https://www.bbc.co.uk/bitesize/topics/zwwp8mn/articles/zrq4qyc", },
+    ],
+    questions: [
+      {
+        id: "w5-sci-1",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "When you kick a football, what makes it start moving?",
+        options: ["A push from your foot (a force)", "The colour of the ball", "The lines on the pitch"],
+        answer: "A push from your foot (a force)",
+        explanation:
+          "A force is a push or a pull. Things don't start moving, stop, or change direction unless a force acts on them. Your kick is a big push!",
+      },
+      {
+        id: "w5-sci-2",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "You kick a ball high into the air. Why does it always come back down?",
+        options: ["Gravity pulls it towards the Earth", "The wind always pushes it down", "The ball gets tired"],
+        answer: "Gravity pulls it towards the Earth",
+        explanation:
+          "Gravity is a pull that the whole Earth has on everything near it. Your kick pushes the ball up, but gravity keeps pulling, slows it down, and brings it back.",
+      },
+      {
+        id: "w5-sci-3",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why do football boots have studs on the bottom?",
+        options: ["To grip the grass so you don't slip", "To make you taller", "To make the ball bounce higher"],
+        answer: "To grip the grass so you don't slip",
+        explanation:
+          "Studs dig into the ground and give you more FRICTION — the gripping force between two surfaces. More friction means you can run and turn fast without sliding over.",
+      },
+      {
+        id: "w5-sci-4",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "You roll the same ball, just as hard, on smooth ice and on long grass. Where does it roll further?",
+        options: ["On the ice", "On the grass", "Exactly the same distance"],
+        answer: "On the ice",
+        explanation:
+          "Long grass rubs against the ball and slows it down — that's friction. Smooth ice has very little friction, so the ball keeps going much further.",
+      },
+      {
+        id: "w5-sci-5",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why do fast swimmers wear tight, smooth swimsuits and caps?",
+        options: ["So they slide through the water more easily", "So the water feels warmer", "So they float higher like a boat"],
+        answer: "So they slide through the water more easily",
+        explanation:
+          "Water pushes back on anything moving through it — this is called DRAG. Smooth, tight clothes (and a cap over the hair) give the water less to grab, so swimmers go faster.",
+      },
+      {
+        id: "w5-sci-6",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why does a pumped-up ball bounce higher than a flat one?",
+        options: [
+          "The squashed air inside springs back and pushes it up",
+          "A flat ball is much heavier",
+          "Pumped-up balls are made of rubber and flat ones aren't",
+        ],
+        answer: "The squashed air inside springs back and pushes it up",
+        explanation:
+          "When a ball hits the ground, it squashes. The air packed inside acts like a spring and pushes back out, launching the ball up. A flat ball has less air to spring back, so it just goes “thud”.",
+      },
+      {
+        id: "w5-sci-7",
+        subject: "Science",
+        type: "multiple-choice",
+        question:
+          "Two players kick the same ball at exactly the same moment, just as hard, from opposite sides. What happens?",
+        options: ["It hardly moves — the pushes cancel out", "It flies twice as far", "It goes straight up into space"],
+        answer: "It hardly moves — the pushes cancel out",
+        explanation:
+          "Equal pushes in opposite directions are called BALANCED forces — they cancel each other out, just like a tug-of-war where both teams pull equally and nobody moves.",
+      },
+      {
+        id: "w5-tech-1",
+        subject: "Tech",
+        type: "multiple-choice",
+        question: "In big football matches, how does goal-line technology know if the ball crossed the line?",
+        options: ["Several super-fast cameras track the ball", "The referee guesses", "The goalkeeper presses a button"],
+        answer: "Several super-fast cameras track the ball",
+        explanation:
+          "Cameras around the goal take hundreds of pictures every second. A computer combines them to work out exactly where the ball is, then buzzes the referee's watch if it's a goal!",
+      },
+      {
+        id: "w5-geo-1",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "Liverpool FC is one of your favourite teams. Which country is the city of Liverpool in?",
+        options: ["England", "Spain", "Japan"],
+        answer: "England",
+        explanation:
+          "Liverpool is a port city in the north-west of England, by the sea. England is part of the United Kingdom, along with Scotland, Wales, and Northern Ireland.",
+      },
+      {
+        id: "w5-geo-2",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "The “Tokyo 2020” Olympic Games were held in Daddy's city. Which country is that in?",
+        options: ["Japan", "China", "Brazil"],
+        answer: "Japan",
+        explanation:
+          "Tokyo is the capital of Japan. Fun fact: the Games were called “Tokyo 2020” but actually happened in 2021, because they were delayed by a year.",
+      },
+      {
+        id: "w5-geo-3",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "Uganda's Joshua Cheptegei won an Olympic gold medal at the Tokyo Games. What is his sport?",
+        options: ["Running", "Swimming", "Boxing"],
+        answer: "Running",
+        explanation:
+          "Joshua Cheptegei is a long-distance runner — he won the 5,000 metres race in Tokyo. Uganda has some of the best long-distance runners in the world!",
+      },
+      {
+        id: "w5-jp-1",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "Japanese fans shout “Ganbatte!” to cheer on a player. What does it mean?",
+        options: ["Do your best!", "Goodbye!", "I'm hungry!"],
+        answer: "Do your best!",
+        explanation:
+          "Ganbatte (gahn-baht-teh) means “do your best” or “go for it!” Japanese people say it before tests, races, and matches. Ganbatte on this homework!",
+      },
+      {
+        id: "w5-jp-2",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "Lots of sports words in Japanese come from English. What sport do you think “sakkā” is?",
+        options: ["Football (soccer)", "Swimming", "Tennis"],
+        answer: "Football (soccer)",
+        explanation:
+          "Sakkā (sah-kah) comes from the English word “soccer”. Try saying it out loud — it sounds just like soccer with a Japanese accent!",
+      },
+      {
+        id: "w5-jp-3",
+        subject: "Japanese",
+        type: "type-answer",
+        question:
+          "A football team has 11 players. In Japanese, juu = 10 and ichi = 1. How do you say 11? (type it in romaji)",
+        answer: "juuichi",
+        accept: ["juu ichi", "juu-ichi", "juichi", "ju ichi", "ju-ichi", "jūichi", "jū ichi"],
+        explanation:
+          "Juu + ichi = juuichi (10 + 1). It's the same LEGO trick as juu-go = 15 from your first week!",
+      },
+      {
+        id: "w5-en-1",
+        subject: "English",
+        type: "multiple-choice",
+        question:
+          "Which word is an ADVERB (it tells you HOW something was done)? “The striker ran quickly towards the goal.”",
+        options: ["quickly", "striker", "goal"],
+        answer: "quickly",
+        explanation:
+          "“Quickly” tells us HOW the striker ran. Lots of adverbs end in -ly: slowly, loudly, carefully. Striker and goal are nouns.",
+      },
+      {
+        id: "w5-en-2",
+        subject: "English",
+        type: "type-answer",
+        question: "fast → faster → ______ (the fastest of all)",
+        answer: "fastest",
+        accept: ["the fastest"],
+        explanation:
+          "Add -er to compare two things (faster) and -est when something beats everything else (fastest). Tall, taller, tallest — strong, stronger, strongest!",
+      },
+      {
+        id: "w5-en-3",
+        subject: "English",
+        type: "multiple-choice",
+        question: "Which word fits? “Our team ___ the match 2–0!”",
+        options: ["won", "one"],
+        answer: "won",
+        explanation:
+          "“Won” and “one” sound exactly the same but mean different things — they're called homophones. “Won” is the past of win; “one” is the number 1.",
+      },
+      {
+        id: "w5-math-1",
+        subject: "Math",
+        type: "type-answer",
+        question:
+          "A football match has two halves of 45 minutes, plus a 15-minute half-time break. How many minutes from kick-off to the final whistle? (no extra time)",
+        answer: "105",
+        accept: ["105 minutes", "105 mins", "105 min"],
+        explanation:
+          "45 + 45 = 90 minutes of football, then add the 15-minute break: 90 + 15 = 105 minutes. That's 1 hour and 45 minutes!",
+      },
+      {
+        id: "w5-math-2",
+        subject: "Math",
+        type: "type-answer",
+        question:
+          "In a football league, a win gets 3 points and a draw gets 1 point. A team wins 5 games and draws 2. How many points do they have?",
+        answer: "17",
+        accept: ["17 points"],
+        explanation:
+          "Wins: 5 × 3 = 15 points. Draws: 2 × 1 = 2 points. Add them: 15 + 2 = 17 points.",
+      },
+      {
+        id: "w5-math-3",
+        subject: "Math",
+        type: "multiple-choice",
+        question: "A swimming pool is 50 metres long. You swim 4 lengths. How far did you swim?",
+        options: ["200 metres", "54 metres", "150 metres"],
+        answer: "200 metres",
+        explanation:
+          "4 lengths × 50 metres = 200 metres. Trick: 50 is half of 100, so 4 × 50 is half of 4 × 100 = half of 400 = 200.",
+      },
+    ],
+  },
+
+  // ───────────────────────────── Week 6 ─────────────────────────────
+  {
+    id: "2026-11-30",
+    weekOf: "Week of November 30, 2026",
+    opensOn: "2026-11-30",
+    theme: "Inside the Computer Week 💻",
+    dadNote:
+      "You play Roblox and watch YouTube every week — but what's actually going on inside the computer? This week we open it up (not with a screwdriver!) and find the brain, the memory, the pixels, and how the internet connects the whole world. Love, Daddy.",
+    topics: ["Computers", "Math", "Japanese", "English"],
+    resources: [
+      { kind: "video", title: "How Computers Work: CPU, Memory, Input & Output (Code.org)", description: "Meet the parts inside a computer: the CPU brain, the memory, and the input and output devices you use every day.", href: "https://www.youtube.com/watch?v=DKGZlaPlVLY", minutes: 4, },
+      { kind: "site", title: "How Does the Internet Work? (BBC Bitesize)", description: "The internet is a giant network of computers sharing information. See how a webpage travels to your screen.", href: "https://www.bbc.co.uk/bitesize/topics/zs7s4wx/articles/z3tbgk7", },
+      { kind: "site", title: "What Is Online Safety? (BBC Bitesize)", description: "The internet is amazing, but you need to stay safe on it. Learn smart ways to protect yourself online.", href: "https://www.bbc.co.uk/bitesize/topics/zv63d2p/articles/zfmhfdm", },
+      { kind: "site", title: "How Do Digital Images Work? (BBC Bitesize)", description: "Every picture on a screen is made of tiny squares called pixels. See how a computer stores a picture like colour-by-numbers!", href: "https://www.bbc.co.uk/bitesize/topics/zf2f9j6/articles/z2tgr82", },
+      { kind: "video", title: "Let's Count to 100 (Super Simple Japanese)", description: "Can you count all the way to hyaku (100) in Japanese? Sing along with the big numbers.", href: "https://www.youtube.com/watch?v=lO9iY7fDCeQ", minutes: 4, },
+      { kind: "site", title: "Using Prefixes (BBC Bitesize)", description: "Put un- or re- at the front of a word and its meaning changes! Learn what prefixes mean.", href: "https://www.bbc.co.uk/bitesize/topics/zqqsw6f/articles/z2gnm39", },
+    ],
+    questions: [
+      {
+        id: "w6-tech-1",
+        subject: "Tech",
+        type: "multiple-choice",
+        question: "Which part of a computer is often called its “brain”, because it does all the thinking and calculating?",
+        options: ["The CPU (processor)", "The mouse", "The screen"],
+        answer: "The CPU (processor)",
+        explanation:
+          "CPU stands for Central Processing Unit. It's a small chip that can do billions of tiny calculations every second — every game, video, and app is the CPU following instructions very, very fast.",
+      },
+      {
+        id: "w6-tech-2",
+        subject: "Tech",
+        type: "multiple-choice",
+        question:
+          "A keyboard is an INPUT device — it puts information INTO the computer. Which of these is an OUTPUT device?",
+        options: ["A speaker", "A mouse", "A microphone"],
+        answer: "A speaker",
+        explanation:
+          "Output devices send information OUT of the computer to you: speakers (sound), screens (pictures), printers (paper). Mice and microphones send information in.",
+      },
+      {
+        id: "w6-tech-3",
+        subject: "Tech",
+        type: "multiple-choice",
+        question:
+          "A computer has short-term memory called RAM. When the power goes off, what happens to unsaved work in RAM?",
+        options: ["It disappears", "It's kept forever", "It gets printed out"],
+        answer: "It disappears",
+        explanation:
+          "RAM is like a whiteboard — super quick to use, but wiped clean when the power goes. Storage (the hard drive or SSD) is like a notebook that keeps things. That's why we press SAVE!",
+      },
+      {
+        id: "w6-tech-4",
+        subject: "Tech",
+        type: "type-answer",
+        question:
+          "Every picture on a screen is made of thousands of tiny coloured squares. What are these squares called? (starts with p)",
+        answer: "pixels",
+        accept: ["pixel", "a pixel"],
+        explanation:
+          "Pixels! Look really closely at a screen (or zoom way into a photo) and you'll see them. Roblox's blocky look is a bit like seeing big pixels.",
+      },
+      {
+        id: "w6-tech-5",
+        subject: "Tech",
+        type: "multiple-choice",
+        question: "What is the internet?",
+        options: [
+          "Millions of computers around the world connected so they can share information",
+          "One giant computer that lives in America",
+          "A program that's only inside your tablet",
+        ],
+        answer: "Millions of computers around the world connected so they can share information",
+        explanation:
+          "The internet is a giant network — computers joined together by cables, Wi-Fi, and phone signals. When you open YouTube, your tablet asks another computer far away to send you the video.",
+      },
+      {
+        id: "w6-tech-6",
+        subject: "Tech",
+        type: "multiple-choice",
+        question: "How does a laptop get on the internet using Wi-Fi when there's no wire plugged in?",
+        options: ["Invisible radio waves travel through the air", "Through tiny invisible strings", "It uses the light from the room"],
+        answer: "Invisible radio waves travel through the air",
+        explanation:
+          "A Wi-Fi router sends and receives radio waves — the same kind of invisible waves that carry radio stations, just carrying computer messages instead.",
+      },
+      {
+        id: "w6-tech-7",
+        subject: "Tech",
+        type: "multiple-choice",
+        question: "A game or website asks you to type your home address and school name. What should you do?",
+        options: ["Don't type it — ask a grown-up first", "Type it in quickly", "Post it so your friends can see"],
+        answer: "Don't type it — ask a grown-up first",
+        explanation:
+          "Personal information — your address, school, phone number, and passwords — should stay private online. A real friend or a good game never needs it. When in doubt, ask Mum or Daddy!",
+      },
+      {
+        id: "w6-sci-1",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why do laptops and game consoles have little fans and air holes?",
+        options: ["To stop them getting too hot", "To blow dust onto the screen", "To make the sound louder"],
+        answer: "To stop them getting too hot",
+        explanation:
+          "When electricity flows through the chips, some of it turns into heat. Too much heat can damage them, so fans blow the hot air out. Never cover the air holes!",
+      },
+      {
+        id: "w6-sci-2",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "A screen can show every colour by mixing just three colours of light. Which three?",
+        options: ["Red, green, and blue", "Red, yellow, and blue", "Black, white, and grey"],
+        answer: "Red, green, and blue",
+        explanation:
+          "Each pixel has tiny red, green, and blue lights. Mixing them makes every colour — red + green light even makes yellow! (Paints mix differently from light.)",
+      },
+      {
+        id: "w6-sci-3",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "In a thunderstorm, you see the lightning BEFORE you hear the thunder. Why?",
+        options: ["Light travels much faster than sound", "Thunder starts later", "Your ears are slower than your eyes"],
+        answer: "Light travels much faster than sound",
+        explanation:
+          "Both happen at the same moment, but light is almost a million times faster than sound. Count the seconds between the flash and the boom — about 3 seconds means the storm is 1 km away.",
+      },
+      {
+        id: "w6-math-1",
+        subject: "Math",
+        type: "type-answer",
+        question: "A tiny screen is 10 pixels wide and 6 pixels tall. How many pixels does it have altogether?",
+        answer: "60",
+        accept: ["60 pixels"],
+        explanation:
+          "It's a rectangle of pixels: 10 × 6 = 60. Real screens have millions — a phone might be over 1,000 pixels wide and 2,000 tall!",
+      },
+      {
+        id: "w6-math-2",
+        subject: "Math",
+        type: "multiple-choice",
+        question: "A game download is 800 MB. So far, 200 MB has downloaded. What fraction is done?",
+        options: ["1/4", "1/2", "1/8"],
+        answer: "1/4",
+        explanation:
+          "200 goes into 800 four times (4 × 200 = 800), so 200 is one quarter — 1/4. Three more quarters to go!",
+      },
+      {
+        id: "w6-math-3",
+        subject: "Math",
+        type: "type-answer",
+        question:
+          "Your tablet starts at 100% battery and loses 10% every hour while you play. After how many hours will it be at 30%?",
+        answer: "7",
+        accept: ["7 hours", "seven", "seven hours"],
+        explanation:
+          "From 100% down to 30% is 70% used. 70 ÷ 10 = 7 hours. (Seven hours of games in a row is too many anyway — take breaks!)",
+      },
+      {
+        id: "w6-jp-1",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "Japanese borrows lots of English words for technology. What do you think “konpyūtā” means?",
+        options: ["Computer", "Cucumber", "Camera"],
+        answer: "Computer",
+        explanation:
+          "Konpyūtā (kon-pyoo-tah) is “computer” said the Japanese way. Others: terebi = TV, gēmu = game. Can you hear the English inside them?",
+      },
+      {
+        id: "w6-jp-2",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "“Hyaku” means 100 in Japanese. What number is “ni-hyaku”?",
+        options: ["200", "102", "120"],
+        answer: "200",
+        explanation:
+          "Ni (2) × hyaku (100) = 200. Same LEGO idea as go-juu (5 × 10 = 50). Now you can count to the hundreds in Japanese!",
+      },
+      {
+        id: "w6-en-1",
+        subject: "English",
+        type: "multiple-choice",
+        question: "The prefix “re-” at the start of a word means “again”. What does “restart” mean?",
+        options: ["Start again", "Never start", "Start slowly"],
+        answer: "Start again",
+        explanation:
+          "Re- = again. Restart, replay, rewrite, rebuild! When a game freezes, you restart it — start it again.",
+      },
+      {
+        id: "w6-en-2",
+        subject: "English",
+        type: "type-answer",
+        question: "The prefix “un-” means “not”. What word means “NOT safe”?",
+        answer: "unsafe",
+        accept: ["un-safe"],
+        explanation:
+          "Un + safe = unsafe. More: unhappy, unlock, unkind. Clicking a strange link from a stranger is unsafe!",
+      },
+      {
+        id: "w6-en-3",
+        subject: "English",
+        type: "multiple-choice",
+        question: "Which sentence uses a question mark correctly?",
+        options: ["Can you turn on the computer?", "Turn on the computer?", "I turned on the computer?"],
+        answer: "Can you turn on the computer?",
+        explanation:
+          "A question mark goes at the end of a sentence that ASKS something. The other two tell or command, so they end with a full stop.",
+      },
+      {
+        id: "w6-geo-1",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "Famous game companies like Nintendo and Sony started in which country?",
+        options: ["Japan", "Uganda", "Brazil"],
+        answer: "Japan",
+        explanation:
+          "Nintendo (Mario, Pokémon games) and Sony (PlayStation) are both Japanese companies. Japan is one of the world's biggest homes of video games!",
+      },
+      {
+        id: "w6-geo-2",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "Most internet messages between continents travel through long cables laid where?",
+        options: ["On the ocean floor", "On the Moon", "Inside the clouds"],
+        answer: "On the ocean floor",
+        explanation:
+          "Huge cables run along the bottom of the oceans, joining the continents. Uganda has no sea, so its internet connects by land to cables that reach the coast in Kenya and Tanzania.",
+      },
+    ],
+  },
+
+  // ───────────────────────────── Week 7 ─────────────────────────────
+  {
+    id: "2026-12-07",
+    weekOf: "Week of December 7, 2026",
+    opensOn: "2026-12-07",
+    theme: "Electricity & Energy Week ⚡",
+    dadNote:
+      "This one is extra special, because you're named after Nikola Tesla — one of the great electricity inventors! This week: circuits, switches, batteries, solar power, and how the River Nile helps light up Uganda. Please remember the safety question — it's the most important one. Love, Daddy.",
+    topics: ["Physics", "Geography", "Japanese", "English", "Math"],
+    resources: [
+      { kind: "site", title: "What Are Electrical Circuits? (BBC Bitesize)", description: "Electricity needs a complete loop. See how batteries, wires, and bulbs join into a circuit — and what a gap does.", href: "https://www.bbc.co.uk/bitesize/topics/z8nqfdm/articles/zqgfp4j", },
+      { kind: "site", title: "Conductors and Insulators (BBC Bitesize)", description: "Why are wires made of metal but covered in plastic? Find out which materials let electricity through.", href: "https://www.bbc.co.uk/bitesize/topics/z8nqfdm/articles/zhkgvwx", },
+      { kind: "video", title: "The Sticky Balloon Trick! (SciShow Kids)", description: "Make a balloon stick to the wall with no tape — then find out how static electricity does it.", href: "https://www.youtube.com/watch?v=5TAIUCYMlIQ", minutes: 3, },
+      { kind: "site", title: "Hydropower (Energy Kids)", description: "See how rushing water spins a turbine inside a dam to make electricity — just like on the Nile. Good one to read with Daddy.", href: "https://www.eia.gov/kids/energy-sources/hydropower/", },
+      { kind: "video", title: "Renewable Energy 101 (National Geographic)", description: "Sunshine and wind never run out! See how solar panels and wind turbines make clean electricity.", href: "https://www.youtube.com/watch?v=1kUE0BZtTRc", minutes: 3, },
+      { kind: "site", title: "Fractions of Amounts (BBC Bitesize)", description: "What is a quarter of 12? Learn how to find a fraction of an amount, like sharing money fairly.", href: "https://www.bbc.co.uk/bitesize/topics/zhdwxnb/articles/zdrbcqt", },
+    ],
+    questions: [
+      {
+        id: "w7-sci-1",
+        subject: "Science",
+        type: "type-answer",
+        question:
+          "For a bulb to light up, electricity must flow all the way round a complete loop. What is this loop called? (starts with c)",
+        answer: "circuit",
+        accept: ["a circuit", "electric circuit", "an electric circuit", "circut", "complete circuit"],
+        explanation:
+          "A circuit is a complete path — battery → wire → bulb → wire → back to the battery. Break the loop anywhere and the electricity stops, so the bulb goes out.",
+      },
+      {
+        id: "w7-sci-2",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Which of these lets electricity flow through it easily? (a CONDUCTOR)",
+        options: ["A metal spoon", "A plastic ruler", "A rubber eraser"],
+        answer: "A metal spoon",
+        explanation:
+          "Metals like copper, iron, and aluminium are good conductors — that's why wires have copper inside. Plastic, rubber, and wood don't let electricity through easily.",
+      },
+      {
+        id: "w7-sci-3",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why are electric wires covered in plastic?",
+        options: [
+          "Plastic is an insulator — it keeps the electricity inside and keeps us safe",
+          "Just to make them colourful",
+          "Plastic makes electricity go faster",
+        ],
+        answer: "Plastic is an insulator — it keeps the electricity inside and keeps us safe",
+        explanation:
+          "An INSULATOR blocks electricity. The copper inside carries the electricity, and the plastic coat stops it escaping into your hand.",
+      },
+      {
+        id: "w7-sci-4",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "You rub a balloon on your hair and then it sticks to the wall. What causes this?",
+        options: ["Static electricity", "Glue in the balloon", "Gravity"],
+        answer: "Static electricity",
+        explanation:
+          "Rubbing moves tiny charged bits called electrons from your hair onto the balloon. The charged balloon then pulls on the wall — and your hair may stand up too!",
+      },
+      {
+        id: "w7-sci-5",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "What does a light switch actually do?",
+        options: ["It closes or opens a gap in the circuit", "It makes brand-new electricity", "It cools the bulb down"],
+        answer: "It closes or opens a gap in the circuit",
+        explanation:
+          "ON joins the gap so electricity can flow round the loop. OFF opens the gap, the loop is broken, and the light goes out. A switch is a little drawbridge for electricity!",
+      },
+      {
+        id: "w7-sci-6",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "A solar panel turns what into electricity?",
+        options: ["Sunlight", "Rain", "Noise"],
+        answer: "Sunlight",
+        explanation:
+          "Solar panels catch sunlight and turn it straight into electricity. Uganda gets lots of strong sunshine all year because it sits on the equator — great for solar power!",
+      },
+      {
+        id: "w7-sci-7",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why must you NEVER push your fingers or anything metal into a plug socket?",
+        options: [
+          "Electricity could flow through your body and badly hurt you",
+          "It would make the TV turn off",
+          "It's fine if you're quick",
+        ],
+        answer: "Electricity could flow through your body and badly hurt you",
+        explanation:
+          "Your body conducts electricity, and the electricity in a wall socket is strong enough to cause serious injury. Batteries in toys are weak and safe; wall sockets are not. Always ask a grown-up.",
+      },
+      {
+        id: "w7-sci-8",
+        subject: "Science",
+        type: "multiple-choice",
+        question:
+          "Scientists named a unit after Nikola Tesla — the same Tesla you're named after! What does the “tesla” unit measure?",
+        options: ["How strong a magnetic field is", "How heavy something is", "How hot something is"],
+        answer: "How strong a magnetic field is",
+        explanation:
+          "Scientists measure magnetic fields in teslas, in honour of his work with electricity and magnetism. So somewhere in a science lab right now, people are measuring things in “Teslas”!",
+      },
+      {
+        id: "w7-tech-1",
+        subject: "Tech",
+        type: "multiple-choice",
+        question:
+          "Nikola Tesla worked on AC (alternating current) electricity systems. What were AC systems especially good at?",
+        options: ["Sending electricity over long distances", "Taking photos", "Making phones waterproof"],
+        answer: "Sending electricity over long distances",
+        explanation:
+          "AC power can be changed to very high voltages for travelling along long power lines, then changed back down for homes. That's why most power grids around the world use AC today.",
+      },
+      {
+        id: "w7-tech-2",
+        subject: "Tech",
+        type: "type-answer",
+        question: "What stores electricity inside a phone or torch so it works without being plugged in? (starts with b)",
+        answer: "battery",
+        accept: ["a battery", "batteries", "batery"],
+        explanation:
+          "A battery stores energy in chemicals and turns it into electricity when the circuit is complete. A phone battery is rechargeable — charging pushes energy back in.",
+      },
+      {
+        id: "w7-geo-1",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "Uganda makes most of its electricity from dams on which river?",
+        options: ["The River Nile", "The Amazon", "The Thames"],
+        answer: "The River Nile",
+        explanation:
+          "Fast-flowing water from the Nile spins giant wheels called turbines inside dams like Bujagali near Jinja. The spinning turbines make electricity — this is called hydropower.",
+      },
+      {
+        id: "w7-geo-2",
+        subject: "Geography",
+        type: "multiple-choice",
+        question:
+          "Japan has lots of volcanoes. Some of its electricity is made using the heat from deep underground. What is this called?",
+        options: ["Geothermal energy", "Wind energy", "Moon energy"],
+        answer: "Geothermal energy",
+        explanation:
+          "“Geo” means Earth and “thermal” means heat — Earth-heat! The same hot rocks that make Japan's hot springs (onsen) can heat water into steam to spin turbines.",
+      },
+      {
+        id: "w7-jp-1",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "In Japanese, “denki” means electricity — and also the lights. If someone says “Denki o keshite!”, what are they asking?",
+        options: ["Turn off the light!", "Open the window!", "Eat your dinner!"],
+        answer: "Turn off the light!",
+        explanation:
+          "Denki o keshite (den-kee oh keh-shteh) = “turn off the light, please”. Saving electricity — Nikola Tesla would approve!",
+      },
+      {
+        id: "w7-jp-2",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "In Japanese, “hi” means fire and “mizu” means water. Which one would you use to put out a campfire?",
+        options: ["Mizu", "Hi", "Denki"],
+        answer: "Mizu",
+        explanation:
+          "Mizu (mee-zoo) is water. If you're thirsty in Japan, ask for “mizu, kudasai” — water, please!",
+      },
+      {
+        id: "w7-en-1",
+        subject: "English",
+        type: "multiple-choice",
+        question: "Which word is spelled correctly?",
+        options: ["electricity", "electrisity", "elecktricity"],
+        answer: "electricity",
+        explanation:
+          "e-lec-tric-i-ty. Memory trick: it starts with the word “electric” — then just add “ity” on the end.",
+      },
+      {
+        id: "w7-en-2",
+        subject: "English",
+        type: "type-answer",
+        question: "Clap the beats in e-lec-tric-i-ty. How many syllables does it have? (answer with a number)",
+        answer: "5",
+        accept: ["five"],
+        explanation:
+          "e (1) - lec (2) - tric (3) - i (4) - ty (5). Clapping along is the best way to count syllables!",
+      },
+      {
+        id: "w7-en-3",
+        subject: "English",
+        type: "multiple-choice",
+        question: "Which word joins these best? “The bulb didn't light up ___ the battery was flat.”",
+        options: ["because", "but", "or"],
+        answer: "because",
+        explanation:
+          "“Because” gives a REASON — why didn't the bulb light? Because the battery was flat. Words that join ideas are called conjunctions.",
+      },
+      {
+        id: "w7-math-1",
+        subject: "Math",
+        type: "type-answer",
+        question: "Batteries come in packs of 4. You need 18 batteries. How many packs must you buy?",
+        answer: "5",
+        accept: ["5 packs", "five", "five packs"],
+        explanation:
+          "4 packs give only 16 — two short! So you need 5 packs (20 batteries), with 2 left over. When you can't buy part of a pack, always round UP.",
+      },
+      {
+        id: "w7-math-2",
+        subject: "Math",
+        type: "type-answer",
+        question: "One unit of electricity costs 750 shillings. How much do 4 units cost? (in shillings)",
+        answer: "3000",
+        accept: ["3,000", "3000 shillings", "3,000 shillings", "shs 3000", "ugx 3000", "ugx 3,000"],
+        explanation:
+          "750 × 4: double 750 to get 1,500 (that's 2 units), then double again for 4 units = 3,000 shillings.",
+      },
+      {
+        id: "w7-math-3",
+        subject: "Math",
+        type: "type-answer",
+        question: "A lamp is switched on for 6 hours every day. How many hours is it on in one week?",
+        answer: "42",
+        accept: ["42 hours"],
+        explanation: "A week has 7 days, so 6 × 7 = 42 hours. Times-table trick: 6 × 7 is the same as 7 × 6 — both 42!",
+      },
+    ],
+  },
+
+  // ───────────────────────────── Week 8 ─────────────────────────────
+  {
+    id: "2026-12-14",
+    weekOf: "Week of December 14, 2026",
+    opensOn: "2026-12-14",
+    theme: "Space Explorers Week 🚀🌙",
+    dadNote:
+      "Space week — we're blasting off! Astronauts, the Moon, Mars robots, and the Japanese spacecraft that brought back pieces of an asteroid. Uganda even has its own satellite now! Finish this one and you're a real space explorer. Love, Daddy.",
+    topics: ["Space", "Physics", "Japanese", "English", "Math"],
+    resources: [
+      { kind: "site", title: "All About the Moon (NASA Space Place)", description: "The Moon has about one-sixth of Earth's gravity — imagine the jumps! Explore craters, Moon rocks, and the astronauts who visited.", href: "https://spaceplace.nasa.gov/all-about-the-moon/en/", },
+      { kind: "video", title: "Take a Tour of the Space Station (SciShow Kids)", description: "Some astronauts live in space for months! See how they eat, sleep, and float around on the ISS.", href: "https://www.youtube.com/watch?v=SOCixRhRGDw", minutes: 3, },
+      { kind: "site", title: "How Do Astronauts Stay Alive in Space? (BBC Bitesize)", description: "Find out how spacesuits and the space station keep astronauts safe and healthy.", href: "https://www.bbc.co.uk/bitesize/topics/z8vxb7h/articles/zyq4wxs", },
+      { kind: "video", title: "Meet the Mars Rovers! (SciShow Kids)", description: "Robots are driving around on Mars right now! Meet the rovers exploring the Red Planet.", href: "https://www.youtube.com/watch?v=ujh-dtEvyIw", minutes: 7, },
+      { kind: "site", title: "The Sun (BBC Bitesize)", description: "The Sun is a star — the closest one to us! Learn why it shines and why life on Earth needs it.", href: "https://www.bbc.co.uk/bitesize/topics/z8vxb7h/articles/zbh2jsg", },
+      { kind: "video", title: "Hayabusa2 Comes Home (JAXA)", description: "Watch an animation of Japan's Hayabusa2 capsule zooming home to Earth with pieces of an asteroid. (No sound — you narrate it!)", href: "https://www.youtube.com/watch?v=Hexvd8OV28A", minutes: 3, },
+    ],
+    questions: [
+      {
+        id: "w8-sci-1",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Is the Sun a planet or a star?",
+        options: ["A star", "A planet", "A moon"],
+        answer: "A star",
+        explanation:
+          "The Sun is a star — a gigantic ball of glowing hot gas. The stars you see at night are suns too, just so far away they look like tiny dots.",
+      },
+      {
+        id: "w8-sci-2",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Why do astronauts float inside the International Space Station?",
+        options: [
+          "The station and everything in it are falling around the Earth together",
+          "There's no gravity at all in space",
+          "They wear special floating suits",
+        ],
+        answer: "The station and everything in it are falling around the Earth together",
+        explanation:
+          "Surprise: gravity up there is still almost as strong as on Earth! The station zooms sideways so fast that it keeps falling AROUND the Earth instead of into it. Everything falls together, so everything floats.",
+      },
+      {
+        id: "w8-sci-3",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Mars is called the Red Planet. Why is it red?",
+        options: ["Its dust and rocks have lots of rust in them", "It's very hot, like fire", "It's covered in red plants"],
+        answer: "Its dust and rocks have lots of rust in them",
+        explanation:
+          "Mars's soil contains iron, and iron + oxygen makes rust — the same orange-red you see on an old bicycle. Mars is actually very cold!",
+      },
+      {
+        id: "w8-sci-4",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "You're standing on the Moon and you shout really loudly. What happens?",
+        options: ["Nobody hears it — there's no air to carry the sound", "It echoes all over the Moon", "It sounds much louder than on Earth"],
+        answer: "Nobody hears it — there's no air to carry the sound",
+        explanation:
+          "Sound is a wobble passed along through air (or water, or solid things). The Moon has no air, so sound can't travel. Astronauts talk to each other by radio!",
+      },
+      {
+        id: "w8-sci-5",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "Astronauts left footprints on the Moon in 1969. Why are they probably still there today?",
+        options: ["There's no wind or rain on the Moon to wipe them away", "The astronauts glued them", "The Moon is made of cement"],
+        answer: "There's no wind or rain on the Moon to wipe them away",
+        explanation:
+          "On Earth, wind and rain wipe footprints away quickly. The Moon has no air and no weather, so footprints can last for a very, very long time.",
+      },
+      {
+        id: "w8-sci-6",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "A rocket blasts hot gas out of its engines to go UP. Which way does the gas shoot out?",
+        options: ["Down", "Up", "Sideways"],
+        answer: "Down",
+        explanation:
+          "Every push has an equal push back the other way. The rocket shoves gas DOWN, and the gas shoves the rocket UP. Try it: let go of a blown-up balloon — air rushes one way, balloon zooms the other!",
+      },
+      {
+        id: "w8-sci-7",
+        subject: "Science",
+        type: "multiple-choice",
+        question: "What is the name of the force that keeps the Moon going round and round the Earth?",
+        options: ["Gravity", "Friction", "Magnetism"],
+        answer: "Gravity",
+        explanation:
+          "The same gravity that brings your football back down also holds the Moon in orbit around Earth — and holds Earth in orbit around the Sun!",
+      },
+      {
+        id: "w8-tech-1",
+        subject: "Tech",
+        type: "multiple-choice",
+        question:
+          "Japan's space agency, JAXA, sent a spacecraft called Hayabusa2 to an asteroid. What amazing thing did it do?",
+        options: [
+          "Brought tiny pieces of the asteroid back to Earth",
+          "Landed people on Mars",
+          "Built a hotel on the Moon",
+        ],
+        answer: "Brought tiny pieces of the asteroid back to Earth",
+        explanation:
+          "Hayabusa2 travelled to an asteroid called Ryugu, collected samples, and dropped them back to Earth in a capsule in 2020. Scientists study them to learn how our solar system began.",
+      },
+      {
+        id: "w8-tech-2",
+        subject: "Tech",
+        type: "multiple-choice",
+        question: "Why can't scientists drive a Mars rover live with a joystick, like a video game?",
+        options: [
+          "Messages take several minutes to travel between Earth and Mars",
+          "Mars doesn't have Wi-Fi passwords",
+          "The rover only listens on Sundays",
+        ],
+        answer: "Messages take several minutes to travel between Earth and Mars",
+        explanation:
+          "Even at the speed of light, a signal takes between about 3 and 22 minutes to reach Mars. Imagine pressing “turn left” and waiting 10 minutes! So rovers get a plan of instructions and partly drive themselves.",
+      },
+      {
+        id: "w8-geo-1",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "In 2022, Uganda put its very first satellite into space! What was it called?",
+        options: ["PearlAfricaSat-1", "Hayabusa", "Apollo 11"],
+        answer: "PearlAfricaSat-1",
+        explanation:
+          "Uganda is nicknamed “the Pearl of Africa”, so its first satellite was named PearlAfricaSat-1. It was built with help from Japan and launched from the International Space Station!",
+      },
+      {
+        id: "w8-geo-2",
+        subject: "Geography",
+        type: "multiple-choice",
+        question: "Rockets are often launched from places near the equator (like the line through Uganda). Why?",
+        options: [
+          "Earth spins fastest at the equator, giving rockets a free speed boost",
+          "It's always cloudy at the equator",
+          "There are fewer birds there",
+        ],
+        answer: "Earth spins fastest at the equator, giving rockets a free speed boost",
+        explanation:
+          "The Earth spins, and the middle (the equator) moves fastest — about 1,600 km per hour! A rocket launched eastward from there gets that speed for free, saving fuel.",
+      },
+      {
+        id: "w8-jp-1",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "In Japanese, “tsuki” means the Moon. What does “hoshi” mean?",
+        options: ["Star", "Sun", "Rocket"],
+        answer: "Star",
+        explanation: "Hoshi (hoh-shee) means star. Next clear night, look up and count the hoshi — in Japanese!",
+      },
+      {
+        id: "w8-jp-2",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "What is “taiyou” in Japanese?",
+        options: ["The Sun", "The Moon", "The sea"],
+        answer: "The Sun",
+        explanation:
+          "Taiyou (tie-yoh) is the Sun. Japan's name in Japanese, Nihon, means “origin of the sun” — that's why Japan is called the Land of the Rising Sun.",
+      },
+      {
+        id: "w8-jp-3",
+        subject: "Japanese",
+        type: "multiple-choice",
+        question: "An astronaut goes to “uchuu”. Where is that?",
+        options: ["Space", "The beach", "School"],
+        answer: "Space",
+        explanation:
+          "Uchuu (oo-choo) means space or the universe. A Japanese astronaut is called an “uchuu hikoushi” — a space flyer!",
+      },
+      {
+        id: "w8-en-1",
+        subject: "English",
+        type: "type-answer",
+        question: "One galaxy, two ______? (write the plural)",
+        answer: "galaxies",
+        accept: ["galaxys"],
+        explanation:
+          "When a word ends in a consonant + y, change the y to i and add -es: galaxy → galaxies, story → stories, baby → babies.",
+      },
+      {
+        id: "w8-en-2",
+        subject: "English",
+        type: "multiple-choice",
+        question: "“Astro” comes from an old Greek word meaning “star”. Which word is about studying stars and space?",
+        options: ["Astronomy", "Biology", "Geography"],
+        answer: "Astronomy",
+        explanation:
+          "Astro = star. Astronomy is the study of stars and space, and an astronaut is a “star sailor”! Biology is the study of living things, geography is the study of places.",
+      },
+      {
+        id: "w8-en-3",
+        subject: "English",
+        type: "multiple-choice",
+        question: "Which sentence uses capital letters correctly?",
+        options: [
+          "The rover landed on Mars.",
+          "The rover landed on mars.",
+          "the Rover landed on Mars.",
+        ],
+        answer: "The rover landed on Mars.",
+        explanation:
+          "Sentences start with a capital letter, and so do names of particular places, like Mars, Uganda, and Tokyo. “Rover” is just a thing, so it doesn't need one.",
+      },
+      {
+        id: "w8-math-1",
+        subject: "Math",
+        type: "multiple-choice",
+        question:
+          "The Moon's gravity is about 1/6 as strong as Earth's. If you can jump 30 cm high on Earth, about how high could you jump on the Moon?",
+        options: ["About 180 cm", "About 5 cm", "About 30 cm"],
+        answer: "About 180 cm",
+        explanation:
+          "With gravity 6 times weaker, the same jump goes about 6 times higher: 30 × 6 = 180 cm — taller than Daddy!",
+      },
+      {
+        id: "w8-math-2",
+        subject: "Math",
+        type: "type-answer",
+        question:
+          "A backpack weighs 30 kg on Earth. The Moon's gravity is 1/6 of Earth's. How many kg would it feel like on the Moon?",
+        answer: "5",
+        accept: ["5 kg", "5kg", "five"],
+        explanation:
+          "1/6 of 30 means 30 ÷ 6 = 5. The backpack is still made of exactly the same stuff — it's just pulled down less, so it feels like 5 kg.",
+      },
+      {
+        id: "w8-math-3",
+        subject: "Math",
+        type: "type-answer",
+        question:
+          "The International Space Station goes all the way round the Earth about every 90 minutes. How many times does it go round in one day (24 hours)?",
+        answer: "16",
+        accept: ["16 times", "sixteen"],
+        explanation:
+          "90 minutes is 1½ hours. In 3 hours it goes round twice, so in 24 hours: 24 ÷ 3 = 8, and 8 × 2 = 16 times. That's 16 sunrises a day for the astronauts!",
+      },
+    ],
+  },
 ];
